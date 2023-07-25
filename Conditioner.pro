@@ -16,11 +16,21 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    CustomSlider.cpp \
     Device.cpp \
+    GraphicsView.cpp \
+    RotatingRectWidget.cpp \
+    RoundedGraphics.cpp \
+    RoundedGraphicsWithSlider.cpp \
     main.cpp
 
 HEADERS += \
-    Device.h
+    CustomSlider.h \
+    Device.h \
+    GraphicsView.h \
+    RotatingRectWidget.h \
+    RoundedGraphics.h \
+    RoundedGraphicsWithSlider.h
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
