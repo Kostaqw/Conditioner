@@ -1,6 +1,107 @@
 #include "RoundedGraphicsStatus.h"
 
-RoundedGraphicsStatus::RoundedGraphicsStatus()
+RoundedGraphicsStatus::RoundedGraphicsStatus(int width, int height, QWidget* parent)
+    : RoundedGraphics(width, height, parent)
 {
+   CreateStatusMap();
+   m_color = QColor("#31395e");
+}
 
+
+void RoundedGraphicsStatus::paintEvent(QPaintEvent *event)
+{
+    Q_UNUSED(event);
+
+    QPainter painter(this);
+
+    painter.setBrush(m_color);
+    painter.drawRoundedRect(rect(), 10, 10);
+    drawShadow(&painter, rect());
+
+    painter.drawPixmap(0,0, m_statusMap.value(m_powerStatus));
+    painter.drawPixmap(width()/100*48,0, m_statusMap.value(m_signalStatus));
+    painter.drawPixmap(0,height()/100*48, m_statusMap.value(m_tempStatus));
+    painter.drawPixmap(width()/100*48,height()/100*48, m_statusMap.value(m_fanStatus));
+}
+
+void RoundedGraphicsStatus::mousePressEvent(QMouseEvent *event)
+{
+    int x = event->x();
+    int y = event->y();
+
+    int sizeIcon = width()/100*50;
+
+    if(x > 0 && x < sizeIcon && y > 0 && y < sizeIcon)
+    {
+        if(m_powerStatus == CondeiStatus::Power_on)
+        {
+            m_powerStatus = CondeiStatus::Power_off;
+            emit PowerIconClicked(m_powerStatus);
+            update();
+            return;
+        }
+        else
+        {
+            m_powerStatus = CondeiStatus::Power_on;
+            emit PowerIconClicked(m_powerStatus);
+            update();
+        }
+    }
+    if(x > sizeIcon && x < width() && y > sizeIcon && y < height())
+    {
+        if(m_fanStatus == CondeiStatus::Black_fan_on)
+        {
+            m_fanStatus = CondeiStatus::Black_fan_off;
+            emit FanIconClicked(m_fanStatus);
+            update();
+            return;
+        }
+        else if(m_fanStatus == CondeiStatus::Black_fan_off)
+        {
+            m_fanStatus = CondeiStatus::Black_fan_on;
+            emit FanIconClicked(m_fanStatus);
+            update();
+            return;
+        }
+        else if(m_fanStatus == CondeiStatus::White_fan_on)
+        {
+            m_fanStatus = CondeiStatus::White_fan_off;
+            emit FanIconClicked(m_fanStatus);
+            update();
+            return;
+        }
+        else
+        {
+            m_fanStatus = CondeiStatus::White_fan_on;
+            emit FanIconClicked(m_fanStatus);
+            update();
+        }
+    }
+}
+
+void RoundedGraphicsStatus::CreateStatusMap()
+{
+    QPixmap spriteSheet("/home/kostaqw/Conditioner/img/status.png");
+
+    m_statusMap.insert(CondeiStatus::Power_on,spriteSheet.copy(0,0,180,180));
+    m_statusMap.insert(CondeiStatus::Power_off,spriteSheet.copy(180,0,180,180));
+
+    m_statusMap.insert(CondeiStatus::Signal_3,spriteSheet.copy(360,0,180,180));
+    m_statusMap.insert(CondeiStatus::Signal_2,spriteSheet.copy(540,0,180,180));
+    m_statusMap.insert(CondeiStatus::Signal_1,spriteSheet.copy(720,0,180,180));
+    m_statusMap.insert(CondeiStatus::Signal_0,spriteSheet.copy(900,0,180,180));
+
+    m_statusMap.insert(CondeiStatus::Temp_low,spriteSheet.copy(1080,0,180,180));
+    m_statusMap.insert(CondeiStatus::Temp_mid,spriteSheet.copy(1260,0,180,180));
+    m_statusMap.insert(CondeiStatus::Temp_high,spriteSheet.copy(1440,0,180,180));
+
+    m_statusMap.insert(CondeiStatus::Black_fan_on,spriteSheet.copy(0,180,180,180));
+    m_statusMap.insert(CondeiStatus::Black_fan_off,spriteSheet.copy(180,180,180,180));
+    m_statusMap.insert(CondeiStatus::White_fan_on,spriteSheet.copy(360,180,180,180));
+    m_statusMap.insert(CondeiStatus::White_fan_off,spriteSheet.copy(540,180,180,180));
+
+    m_powerStatus = CondeiStatus::Power_off;
+    m_signalStatus = CondeiStatus::Signal_3;
+    m_tempStatus = CondeiStatus::Temp_low;
+    m_fanStatus = CondeiStatus::White_fan_off;
 }

@@ -21,6 +21,7 @@ SOURCES += \
     GraphicsView.cpp \
     RotatingRectWidget.cpp \
     RoundedGraphics.cpp \
+    RoundedGraphicsStatus.cpp \
     RoundedGraphicsWithSlider.cpp \
     main.cpp
 
@@ -30,7 +31,9 @@ HEADERS += \
     GraphicsView.h \
     RotatingRectWidget.h \
     RoundedGraphics.h \
-    RoundedGraphicsWithSlider.h
+    RoundedGraphicsStatus.h \
+    RoundedGraphicsWithSlider.h \
+    SpriteStatus.h
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

@@ -7,7 +7,11 @@ RoundedGraphics::RoundedGraphics(int width, int height, QWidget *parent) : QWidg
 {
     setFixedSize(width, height);
     setAttribute(Qt::WA_TranslucentBackground);
+    m_headerFont = QFont("Arial", 40);
+    m_headerFont.setBold(true);
 
+    m_textFont = QFont("Arial", 40);
+    m_textFont.setBold(true);
 }
 
 RoundedGraphics::RoundedGraphics(int width, int height, const QColor& color, QWidget *parent) :
@@ -15,10 +19,17 @@ RoundedGraphics::RoundedGraphics(int width, int height, const QColor& color, QWi
 {
     setFixedSize(m_width, m_height);
     setAttribute(Qt::WA_TranslucentBackground);
+
+    m_headerFont = QFont("Arial", 40);
+    m_headerFont.setBold(true);
+
+    m_textFont = QFont("Arial", 40);
+    m_textFont.setBold(true);
 }
 
 void RoundedGraphics :: paintEvent(QPaintEvent *event)
 {
+    Q_UNUSED(event);
        QPainter painter(this);
        painter.setRenderHint(QPainter::Antialiasing);
 
@@ -31,11 +42,10 @@ void RoundedGraphics :: paintEvent(QPaintEvent *event)
 
        if(m_isHeader)
        {
-           QFont font("Arial", 18);
-           font.setBold(true);
-           painter.setFont(font);
 
-           QFontMetrics fm(font);
+           painter.setFont(m_headerFont);
+
+           QFontMetrics fm(m_headerFont);
            int textWidth = fm.width(m_header);
            int textHeight = fm.height();
 
@@ -47,10 +57,7 @@ void RoundedGraphics :: paintEvent(QPaintEvent *event)
        }
        if(m_text != nullptr)
        {
-           QFont font("Arial", 25);
-           font.setBold(true);
-           painter.setFont(font);
-
+           painter.setFont(m_textFont);
            QRect textRect = QRect(0, 0, width(), height());
            QTextOption textOption;
            textOption.setAlignment(Qt::AlignCenter);
@@ -82,6 +89,16 @@ void RoundedGraphics::SetHeader(QString header)
     m_header = header;
     m_isHeader = true;
 }
+void RoundedGraphics::SetHeaderFont(QFont *headerFont)
+{
+
+    m_headerFont = *headerFont;
+}
+void RoundedGraphics::SetTextFont(QFont *textFont)
+{
+
+    m_textFont = *textFont;
+}
 void RoundedGraphics::drawShadow(QPainter* painter, const QRect& rect)
 {
     if(m_shadowColor == nullptr)
@@ -91,4 +108,9 @@ void RoundedGraphics::drawShadow(QPainter* painter, const QRect& rect)
     painter->setPen(Qt::NoPen);
     painter->setBrush(m_shadowColor);
     painter->drawRoundedRect(rect.adjusted(5, 5, -5, -5), 10, 10);
+}
+
+RoundedGraphics::~RoundedGraphics()
+{
+
 }

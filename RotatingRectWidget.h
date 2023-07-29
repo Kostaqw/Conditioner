@@ -3,10 +3,10 @@
 
 #include <QWidget>
 #include <QSlider>
-#include <QTimer>
 #include <QPixmap>
+#include "RoundedGraphics.h"
 
-class RotatingRectWidget : public QWidget
+class RotatingRectWidget : public RoundedGraphics
 {
     Q_OBJECT
 public:
@@ -26,4 +26,3 @@ private:
     QTimer* m_timer;
     QPixmap m_image;
 };
-
