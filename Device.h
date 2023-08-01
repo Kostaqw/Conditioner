@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QWidget>
+#include "SendData.h"
 
 class QLabel;
 class QLineEdit;
@@ -27,6 +28,7 @@ private:
     QLabel* m_firstBlockLabel;
     QLabel* m_secondBlockLabel;
     QLabel* m_thirdBlockLabel;
+    QLabel* m_fourBlackLabel;
 
     QLineEdit* m_tempEdit;
     QLineEdit* m_pressureEdit;
@@ -36,15 +38,18 @@ private:
     QComboBox* m_stateFirstBlock;
     QComboBox* m_stateSecondBlock;
     QComboBox* m_stateThirdBlock;
+    QComboBox* m_stateFourBlock;
 
     QPushButton* m_sendButton;
 
 public:
     explicit Device(QWidget *parent = nullptr);
 
+signals:
+    void sendData(SendData data);
+
 public slots:
-    void GetData(QString data);
-    void SendData(QString data);
+    void receiveData(SendData data);
 
 };
 

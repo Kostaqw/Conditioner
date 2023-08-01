@@ -1,4 +1,5 @@
 #pragma once
+
 enum class CondeiStatus {
     Power_on,
     Power_off,
@@ -13,4 +14,32 @@ enum class CondeiStatus {
     Black_fan_off,
     White_fan_on,
     White_fan_off,
+};
+
+enum class tempType
+{
+    Cels,
+    Fahrenheit,
+    Kelvin
+};
+
+enum class Pressure
+{
+    Pascal,
+    Mm
+};
+
+enum powerSignal
+{
+    s_none,
+    s_low,
+    s_mid,
+    s_high
+};
+
+enum temperatureOfSystem
+{
+    t_low,
+    t_mid,
+    t_high
 };

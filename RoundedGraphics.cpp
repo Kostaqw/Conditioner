@@ -29,42 +29,42 @@ RoundedGraphics::RoundedGraphics(int width, int height, const QColor& color, QWi
 
 void RoundedGraphics :: paintEvent(QPaintEvent *event)
 {
-    Q_UNUSED(event);
-       QPainter painter(this);
-       painter.setRenderHint(QPainter::Antialiasing);
+   Q_UNUSED(event);
+   QPainter painter(this);
+   painter.setRenderHint(QPainter::Antialiasing);
 
-       painter.setPen(Qt::NoPen);
-       painter.setBrush(m_color);
-       painter.drawRoundedRect(rect(), 10, 10);
+   painter.setPen(Qt::NoPen);
+   painter.setBrush(m_color);
+   painter.drawRoundedRect(rect(), 10, 10);
 
 
-       drawShadow(&painter, rect());
+   drawShadow(&painter, rect());
 
-       if(m_isHeader)
-       {
+   if(m_isHeader)
+   {
 
-           painter.setFont(m_headerFont);
+       painter.setFont(m_headerFont);
 
-           QFontMetrics fm(m_headerFont);
-           int textWidth = fm.width(m_header);
-           int textHeight = fm.height();
+       QFontMetrics fm(m_headerFont);
+       int textWidth = fm.width(m_header);
+       int textHeight = fm.height();
 
-           int x = (width() - textWidth) / 2;
-           int y = textHeight;
+       int x = (width() - textWidth) / 2;
+       int y = textHeight;
 
-           painter.setPen(Qt::white);
-           painter.drawText(x, y, m_header);
-       }
-       if(m_text != nullptr)
-       {
-           painter.setFont(m_textFont);
-           QRect textRect = QRect(0, 0, width(), height());
-           QTextOption textOption;
-           textOption.setAlignment(Qt::AlignCenter);
-           textOption.setWrapMode(QTextOption::WordWrap);
-           painter.setPen(Qt::white);
-           painter.drawText(textRect, m_text, textOption);
-       }
+       painter.setPen(Qt::white);
+       painter.drawText(x, y, m_header);
+   }
+   if(m_text != nullptr)
+   {
+       painter.setFont(m_textFont);
+       QRect textRect = QRect(0, 0, width(), height());
+       QTextOption textOption;
+       textOption.setAlignment(Qt::AlignCenter);
+       textOption.setWrapMode(QTextOption::WordWrap);
+       painter.setPen(Qt::white);
+       painter.drawText(textRect, m_text, textOption);
+   }
 }
 
 void RoundedGraphics::SetText(QString text)

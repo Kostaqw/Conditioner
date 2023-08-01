@@ -23,6 +23,8 @@ SOURCES += \
     RoundedGraphics.cpp \
     RoundedGraphicsStatus.cpp \
     RoundedGraphicsWithSlider.cpp \
+    RoundedSettingsWidget.cpp \
+    SendData.cpp \
     main.cpp
 
 HEADERS += \
@@ -33,7 +35,9 @@ HEADERS += \
     RoundedGraphics.h \
     RoundedGraphicsStatus.h \
     RoundedGraphicsWithSlider.h \
-    SpriteStatus.h
+    RoundedSettingsWidget.h \
+    SendData.h \
+    StatusEnums.h
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

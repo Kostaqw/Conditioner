@@ -3,7 +3,7 @@
 #include "RoundedGraphics.h"
 #include <QMap>
 #include <QPixmap>
-#include "SpriteStatus.h"
+#include "StatusEnums.h"
 #include <QMouseEvent>
 
 typedef QMap<CondeiStatus, QPixmap> StatusMap;

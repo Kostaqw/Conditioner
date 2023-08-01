@@ -56,10 +56,10 @@ int main(int argc, char *argv[])
     buttonProxy->setPos(1024-settingsButton->width(),768-settingsButton->height());
     settingsProxy->setPos(1024-400,0);
 
-   QMainWindow window;
+    QMainWindow window;
 
-   window.setCentralWidget(new GraphicsView(&scene, &window));
-   window.show();
+    window.setCentralWidget(new GraphicsView(&scene, &window));
+    window.show();
 
     dev->show();
    QObject::connect(settingsButton, &QPushButton::clicked, [=](){settingsWidget->show();});
