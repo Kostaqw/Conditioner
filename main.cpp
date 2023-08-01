@@ -63,5 +63,11 @@ int main(int argc, char *argv[])
 
     dev->show();
    QObject::connect(settingsButton, &QPushButton::clicked, [=](){settingsWidget->show();});
-    return a.exec();
+   QObject::connect(setTemperatureWidget, &RoundedGraphicsWithSlider::sendTemp, dev, &Device::GetTemp);
+   QObject::connect(statusWidget, &RoundedGraphicsStatus::ChangePower, dev, &Device::GetPowerStatus);
+   QObject::connect(statusWidget, &RoundedGraphicsStatus::ChangeFan, dev, &Device::GetFanStatus);
+   QObject::connect(condeiWidget, &RotatingRectWidget::changeAngle, dev, &Device::GetAngle);
+   QObject::connect(dev, &Device::sendPowerSignal, statusWidget, &RoundedGraphicsStatus::GetPowerOfSignal);
+   QObject::connect(dev, &Device::sendTempOfSystem, statusWidget, &RoundedGraphicsStatus::GetTempOfSystem);
+   return a.exec();
 }

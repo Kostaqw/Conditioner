@@ -1,6 +1,8 @@
 #include "Device.h"
 #include <QtWidgets>
 #include <QFont>
+#include <QRandomGenerator>
+#include <QMap>
 
 Device::Device(QWidget *parent) : QWidget(parent)
 {
@@ -11,16 +13,16 @@ Device::Device(QWidget *parent) : QWidget(parent)
     QFont headerFont("Arial", 18);
     QGridLayout* gridLayout = new QGridLayout();
 
-    m_angleLabel = new QLabel("<: ");
+    m_angleLabel = new QLabel("<: " );
     m_angleLabel->setFont(headerFont);
 
     m_tempLabel = new QLabel("T: ");
     m_tempLabel->setFont(headerFont);
 
-    m_pressureLabel = new QLabel("P: ");
+    m_pressureLabel = new QLabel("P: " + QString::number(QRandomGenerator::global()->bounded(700,800)));
     m_pressureLabel->setFont(headerFont);
 
-    m_humidityLabel = new QLabel("H: ");
+    m_humidityLabel = new QLabel("H: " + QString::number(QRandomGenerator::global()->bounded(5,95)));
     m_humidityLabel->setFont(headerFont);
 
     m_headerLabel = new QLabel("Set values");
@@ -77,17 +79,17 @@ Device::Device(QWidget *parent) : QWidget(parent)
     m_stateFirstBlock->addItem("Power_on");
     m_stateFirstBlock->addItem("Power_off");
     m_stateSecondBlock = new QComboBox();
-    m_stateSecondBlock->addItem("3");
-    m_stateSecondBlock->addItem("2");
-    m_stateSecondBlock->addItem("1");
-    m_stateSecondBlock->addItem("0");
+    m_stateSecondBlock->addItem(signalToString(powerSignal::s_high));
+    m_stateSecondBlock->addItem(signalToString(powerSignal::s_mid));
+    m_stateSecondBlock->addItem(signalToString(powerSignal::s_low));
+    m_stateSecondBlock->addItem(signalToString(powerSignal::s_none));
     m_stateThirdBlock = new QComboBox();
     m_stateThirdBlock->addItem("fan_on");
     m_stateThirdBlock->addItem("fan_off");
     m_stateFourBlock = new QComboBox();
-    m_stateFourBlock->addItem("high");
-    m_stateFourBlock->addItem("mid");
-    m_stateFourBlock->addItem("low");
+    m_stateFourBlock->addItem(temperatureToString(temperatureOfSystem::t_low));
+    m_stateFourBlock->addItem(temperatureToString(temperatureOfSystem::t_mid));
+    m_stateFourBlock->addItem(temperatureToString(temperatureOfSystem::t_high));
 
     gridLayout->addWidget(m_stateFirstBlock,6,0,1,2);
     gridLayout->addWidget(m_stateSecondBlock,6,2,1,2);
@@ -97,23 +99,59 @@ Device::Device(QWidget *parent) : QWidget(parent)
     m_sendButton = new QPushButton("Sent");
     gridLayout->addWidget(m_sendButton,9,0,1,4);
     setLayout(gridLayout);
+
+    QObject::connect(m_sendButton, &QPushButton::clicked, [=]()
+    {
+        emit sendTempOfSystem(stringToTemperature(m_stateFourBlock->currentText()));
+        emit sendPowerSignal(stringToPowerSignal(m_stateSecondBlock->currentText()));
+    });
 }
 
+temperatureOfSystem Device::stringToTemperature(const QString &value)
+{
+    static const QMap<QString, temperatureOfSystem> stringToEnumMap {
+            {"low", temperatureOfSystem::t_low},
+            {"mid", temperatureOfSystem::t_mid},
+            {"high", temperatureOfSystem::t_high}
+        };
+        return stringToEnumMap.value(value, temperatureOfSystem::t_low);
+}
+powerSignal Device::stringToPowerSignal(const QString &value)
+{
+    static const QMap<QString, powerSignal> stringToEnumMap {
+            {"3", powerSignal::s_high},
+            {"2", powerSignal::s_mid},
+            {"1", powerSignal::s_low},
+            {"0", powerSignal::s_none}
+        };
+        return stringToEnumMap.value(value, powerSignal::s_none);
+}
+
+QString Device::signalToString(powerSignal value) {
+    static const QMap<powerSignal, QString> enumToStringMap {
+        {powerSignal::s_high, "3"},
+        {powerSignal::s_mid, "2"},
+        {powerSignal::s_low, "1"},
+        {powerSignal::s_none, "0"}
+    };
+    return enumToStringMap.value(value, QString());
+}
+QString Device::temperatureToString(temperatureOfSystem value) {
+    static const QMap<temperatureOfSystem, QString> enumToStringMap {
+        {temperatureOfSystem::t_low, "low"},
+        {temperatureOfSystem::t_mid, "mid"},
+        {temperatureOfSystem::t_high, "high" }
+    };
+    return enumToStringMap.value(value, QString());
+}
+/*
 void Device::receiveData(SendData data)
 {
-    m_angleLabel->setText("<: " + QString::number(data.m_angle));
-    m_tempLabel->setText("T: " + QString::number(data.m_temperature));
-    m_humidityLabel->setText("H: "+ QString::number(data.m_humidity));
+
+
     m_pressureLabel->setText("P: " + QString::number(data.m_pressure));
 
-    if(data.m_isPower)
-    {
-        m_stateFirstBlock->setCurrentIndex(0);
-    }
-    else
-    {
-        m_stateFirstBlock->setCurrentIndex(1);
-    }
+
 
     if(data.m_signal == powerSignal::s_high)
     {
@@ -132,14 +170,8 @@ void Device::receiveData(SendData data)
         m_stateSecondBlock->setCurrentIndex(3);
     }
 
-    if(data.m_fan)
-    {
-        m_stateThirdBlock->setCurrentIndex(0);
-    }
-    else
-    {
-        m_stateThirdBlock->setCurrentIndex(1);
-    }
+
+
 
     if(data.m_temperatureOfSystem == temperatureOfSystem::t_high)
     {
@@ -153,5 +185,38 @@ void Device::receiveData(SendData data)
     {
         m_stateFourBlock->setCurrentIndex(2);
     }
+}*/
+
+void Device::GetTemp(float temp)
+{
+  m_tempLabel->setText("T: " + QString::number(temp));
 }
 
+void Device::GetPowerStatus(bool power)
+{
+  if(power)
+  {
+      m_stateFirstBlock->setCurrentIndex(0);
+  }
+  else
+  {
+      m_stateFirstBlock->setCurrentIndex(1);
+  }
+}
+
+void Device::GetFanStatus(bool fan)
+{
+  if(fan)
+  {
+      m_stateThirdBlock->setCurrentIndex(0);
+  }
+  else
+  {
+      m_stateThirdBlock->setCurrentIndex(1);
+  }
+}
+
+void Device::GetAngle(int angle)
+{
+    m_angleLabel->setText("<: " + QString::number(angle));
+}

@@ -28,7 +28,11 @@ private:
     void CreateStatusMap();
 
 signals:
-    void PowerIconClicked(const CondeiStatus &status);
-    void FanIconClicked(const CondeiStatus &status);
+    void ChangePower(bool power);
+    void ChangeFan(bool fan);
+
+public slots:
+    void GetTempOfSystem(temperatureOfSystem temp);
+    void GetPowerOfSignal(powerSignal signal);
 };
 

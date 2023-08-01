@@ -2,6 +2,7 @@
 
 #include <QWidget>
 #include "SendData.h"
+#include <QtGlobal>
 
 class QLabel;
 class QLineEdit;
@@ -42,14 +43,23 @@ private:
 
     QPushButton* m_sendButton;
 
+    temperatureOfSystem stringToTemperature(const QString &value);
+    powerSignal stringToPowerSignal(const QString &value);
+    QString temperatureToString(temperatureOfSystem value);
+    QString signalToString(powerSignal value);
+
 public:
     explicit Device(QWidget *parent = nullptr);
 
 signals:
     void sendData(SendData data);
+    void sendTempOfSystem(temperatureOfSystem temp);
+    void sendPowerSignal(powerSignal signal);
 
 public slots:
-    void receiveData(SendData data);
-
+    void GetTemp(float Temp);
+    void GetPowerStatus(bool power);
+    void GetFanStatus(bool fan);
+    void GetAngle(int angle);
 };
 

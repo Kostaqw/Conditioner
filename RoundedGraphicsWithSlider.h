@@ -14,4 +14,6 @@ private slots:
 
 private:
     QSlider* m_slider;
+signals:
+    void sendTemp(float temp);
 };

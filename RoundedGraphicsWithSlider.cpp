@@ -34,5 +34,6 @@ RoundedGraphicsWithSlider::RoundedGraphicsWithSlider(int width, int height, QWid
 void RoundedGraphicsWithSlider::handleSliderValueChanged(int value)
 {
     SetText(QString::number(value) + " C");
+    emit sendTemp(value);
     update();
 }

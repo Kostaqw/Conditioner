@@ -36,14 +36,14 @@ void RoundedGraphicsStatus::mousePressEvent(QMouseEvent *event)
         if(m_powerStatus == CondeiStatus::Power_on)
         {
             m_powerStatus = CondeiStatus::Power_off;
-            emit PowerIconClicked(m_powerStatus);
+            emit ChangePower(false);
             update();
             return;
         }
         else
         {
             m_powerStatus = CondeiStatus::Power_on;
-            emit PowerIconClicked(m_powerStatus);
+            emit ChangePower(true);
             update();
         }
     }
@@ -52,28 +52,28 @@ void RoundedGraphicsStatus::mousePressEvent(QMouseEvent *event)
         if(m_fanStatus == CondeiStatus::Black_fan_on)
         {
             m_fanStatus = CondeiStatus::Black_fan_off;
-            emit FanIconClicked(m_fanStatus);
+            emit ChangeFan(false);
             update();
             return;
         }
         else if(m_fanStatus == CondeiStatus::Black_fan_off)
         {
             m_fanStatus = CondeiStatus::Black_fan_on;
-            emit FanIconClicked(m_fanStatus);
+            emit ChangeFan(true);
             update();
             return;
         }
         else if(m_fanStatus == CondeiStatus::White_fan_on)
         {
             m_fanStatus = CondeiStatus::White_fan_off;
-            emit FanIconClicked(m_fanStatus);
+            emit ChangeFan(false);
             update();
             return;
         }
         else
         {
             m_fanStatus = CondeiStatus::White_fan_on;
-            emit FanIconClicked(m_fanStatus);
+            emit ChangeFan(true);
             update();
         }
     }
@@ -104,4 +104,42 @@ void RoundedGraphicsStatus::CreateStatusMap()
     m_signalStatus = CondeiStatus::Signal_3;
     m_tempStatus = CondeiStatus::Temp_low;
     m_fanStatus = CondeiStatus::White_fan_off;
+}
+
+void RoundedGraphicsStatus::GetTempOfSystem(temperatureOfSystem temp)
+{
+    if(temp == temperatureOfSystem::t_low)
+    {
+        m_tempStatus = CondeiStatus::Temp_low;
+    }
+    else if (temp == temperatureOfSystem::t_mid)
+    {
+        m_tempStatus = CondeiStatus::Temp_mid;
+    }
+    else
+    {
+        m_tempStatus = CondeiStatus::Temp_high;
+    }
+    update();
+}
+
+void RoundedGraphicsStatus::GetPowerOfSignal(powerSignal signal)
+{
+    if(signal == powerSignal::s_none)
+    {
+        m_signalStatus = CondeiStatus::Signal_0;
+    }
+    else if (signal == powerSignal::s_low)
+    {
+        m_signalStatus = CondeiStatus::Signal_1;
+    }
+    else if (signal == powerSignal::s_mid)
+    {
+        m_signalStatus = CondeiStatus::Signal_2;
+    }
+    else
+    {
+        m_signalStatus = CondeiStatus::Signal_3;
+    }
+    update();
 }

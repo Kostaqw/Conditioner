@@ -25,4 +25,7 @@ private:
     QSlider* m_slider;
     QTimer* m_timer;
     QPixmap m_image;
+
+signals:
+    void changeAngle(int angle);
 };

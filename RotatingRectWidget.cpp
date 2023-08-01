@@ -88,6 +88,7 @@ void RotatingRectWidget::drawRectangles(QPainter* painter)
     painter->rotate(-m_rotationAngle);
     painter->drawRect(-rectWidth / 2, -rectHeigth / 2, rectWidth, rectHeigth);
     painter->restore();
+    emit changeAngle(m_rotationAngle);
 
 }
 
