@@ -104,6 +104,17 @@ Device::Device(QWidget *parent) : QWidget(parent)
     {
         emit sendTempOfSystem(stringToTemperature(m_stateFourBlock->currentText()));
         emit sendPowerSignal(stringToPowerSignal(m_stateSecondBlock->currentText()));
+
+        bool p1,p2,p3,p4;
+        int temp = m_tempEdit->text().toInt(&p1);
+        int press = m_pressureEdit->text().toInt(&p2);
+        int humm = m_HumidityEdit->text().toInt(&p3);
+        int angle = m_AngleEdit->text().toInt(&p4);
+
+        if(p1 && p2 && p3 && p4)
+        {
+            emit sendParametrs(temp, press, humm, angle);
+        }
     });
 }
 

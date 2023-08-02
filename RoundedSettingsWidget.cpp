@@ -102,10 +102,72 @@ void RoundedSettingsWidget::CreateElements(int width, int height)
 
     m_buttonSave.setGeometry(width/100*5,height-buttonHeight*1.05,width-width/100*10,buttonHeight);
 
+    m_activeButoonStyle = "QPushButton {"
+                          "   background-color: orange;"
+                          "   border: none;"
+                          "}"
+                          "QPushButton:focus {"
+                          "   outline: none;"
+                          "}";
+    m_inActiveButoonStyle = "background-color: white";
+
     QObject::connect(&m_buttonSave, &QPushButton::clicked, this, &RoundedSettingsWidget::saveButtonClicked);
+    QObject::connect(&m_buttonCelsie, &QPushButton::clicked, this, &RoundedSettingsWidget::celstButtonClicked);
+    QObject::connect(&m_buttonFarhengeit, &QPushButton::clicked, this, &RoundedSettingsWidget::farhButtonClicked);
+    QObject::connect(&m_buttonKelvin, &QPushButton::clicked, this, &RoundedSettingsWidget::kelvButtonClicked);
+    QObject::connect(&m_buttonMM, &QPushButton::clicked, this, &RoundedSettingsWidget::hgButtonClicked);
+    QObject::connect(&m_buttonPascal, &QPushButton::clicked, this, &RoundedSettingsWidget::pascalButtonClicked);
+    QObject::connect(&m_buttonLigt, &QPushButton::clicked, this, &RoundedSettingsWidget::lightButtonClicked);
+    QObject::connect(&m_buttonDark, &QPushButton::clicked, this, &RoundedSettingsWidget::darlButtonClicked);
 }
 
 void RoundedSettingsWidget::saveButtonClicked()
 {
     this->hide();
+}
+
+void RoundedSettingsWidget::celstButtonClicked()
+{
+    m_buttonCelsie.setStyleSheet(m_activeButoonStyle);
+    m_buttonFarhengeit.setStyleSheet(m_inActiveButoonStyle);
+    m_buttonKelvin.setStyleSheet(m_inActiveButoonStyle);
+}
+
+void RoundedSettingsWidget::farhButtonClicked()
+{
+    m_buttonCelsie.setStyleSheet(m_inActiveButoonStyle);
+    m_buttonFarhengeit.setStyleSheet(m_activeButoonStyle);
+    m_buttonKelvin.setStyleSheet(m_inActiveButoonStyle);
+}
+
+void RoundedSettingsWidget::kelvButtonClicked()
+{
+    m_buttonCelsie.setStyleSheet(m_inActiveButoonStyle);
+    m_buttonFarhengeit.setStyleSheet(m_inActiveButoonStyle);
+    m_buttonKelvin.setStyleSheet(m_activeButoonStyle);
+}
+
+void RoundedSettingsWidget::pascalButtonClicked()
+{
+    m_buttonPascal.setStyleSheet(m_activeButoonStyle);
+    m_buttonMM.setStyleSheet(m_inActiveButoonStyle);
+}
+
+void RoundedSettingsWidget::hgButtonClicked()
+{
+    m_buttonPascal.setStyleSheet(m_inActiveButoonStyle);
+    m_buttonMM.setStyleSheet(m_activeButoonStyle);
+}
+
+void RoundedSettingsWidget::lightButtonClicked()
+{
+    m_buttonLigt.setStyleSheet(m_activeButoonStyle);
+    m_buttonDark.setStyleSheet(m_inActiveButoonStyle);
+
+}
+
+void RoundedSettingsWidget::darlButtonClicked()
+{
+    m_buttonLigt.setStyleSheet(m_inActiveButoonStyle);
+    m_buttonDark.setStyleSheet(m_activeButoonStyle);
 }

@@ -17,15 +17,11 @@ public:
 protected:
     void paintEvent(QPaintEvent *event) override;
     void drawShadow(QPainter* painter, const QRect& rect);
-    QColor m_color;
-    QColor m_shadowColor;
-
-private:
 
     bool m_isHeader = false;
 
-    int m_width;
-    int m_height;
+    QColor m_color;
+    QColor m_shadowColor;
 
     QString m_text;
     QString m_header;
@@ -33,6 +29,15 @@ private:
     QFont m_headerFont;
     QFont m_textFont;
 
+private:
+
+
+
+    int m_width;
+    int m_height;
+
     void CreateShadow(QColor color);
+
+
 };
 

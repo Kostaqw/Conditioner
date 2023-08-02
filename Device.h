@@ -55,6 +55,7 @@ signals:
     void sendData(SendData data);
     void sendTempOfSystem(temperatureOfSystem temp);
     void sendPowerSignal(powerSignal signal);
+    void sendParametrs(int temp, int pressure, int humidity, int angle);
 
 public slots:
     void GetTemp(float Temp);

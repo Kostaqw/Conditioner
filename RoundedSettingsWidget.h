@@ -10,6 +10,9 @@ protected:
     void paintEvent(QPaintEvent *event) override;
 
 private:
+    QString m_activeButoonStyle;
+    QString m_inActiveButoonStyle;
+
     QPushButton m_buttonCelsie;
     QPushButton m_buttonFarhengeit;
     QPushButton m_buttonKelvin;
@@ -28,5 +31,12 @@ private:
 
 private slots:
     void saveButtonClicked();
+    void celstButtonClicked();
+    void farhButtonClicked();
+    void kelvButtonClicked();
+    void pascalButtonClicked();
+    void hgButtonClicked();
+    void lightButtonClicked();
+    void darlButtonClicked();
 };
 

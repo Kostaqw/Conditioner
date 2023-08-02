@@ -110,6 +110,8 @@ void RoundedGraphics::drawShadow(QPainter* painter, const QRect& rect)
     painter->drawRoundedRect(rect.adjusted(5, 5, -5, -5), 10, 10);
 }
 
+
+
 RoundedGraphics::~RoundedGraphics()
 {
 

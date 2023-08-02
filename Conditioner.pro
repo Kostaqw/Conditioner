@@ -20,11 +20,13 @@ SOURCES += \
     Device.cpp \
     GraphicsView.cpp \
     RotatingRectWidget.cpp \
+    RoundedGraphichParametrs.cpp \
     RoundedGraphics.cpp \
     RoundedGraphicsStatus.cpp \
     RoundedGraphicsWithSlider.cpp \
     RoundedSettingsWidget.cpp \
     SendData.cpp \
+    Settings.cpp \
     main.cpp
 
 HEADERS += \
@@ -32,11 +34,13 @@ HEADERS += \
     Device.h \
     GraphicsView.h \
     RotatingRectWidget.h \
+    RoundedGraphichParametrs.h \
     RoundedGraphics.h \
     RoundedGraphicsStatus.h \
     RoundedGraphicsWithSlider.h \
     RoundedSettingsWidget.h \
     SendData.h \
+    Settings.h \
     StatusEnums.h
 
 # Default rules for deployment.

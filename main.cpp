@@ -15,6 +15,7 @@
 #include "RotatingRectWidget.h"
 #include "RoundedGraphicsStatus.h"
 #include "RoundedSettingsWidget.h"
+#include "RoundedGraphichParametrs.h"
 
 int main(int argc, char *argv[])
 {
@@ -27,7 +28,7 @@ int main(int argc, char *argv[])
     RoundedGraphics *backGroundWidget = new RoundedGraphics(1024, 768, QColor("#18213d"));
     RoundedGraphicsWithSlider *setTemperatureWidget = new RoundedGraphicsWithSlider(400,200,backGroundWidget);
     RotatingRectWidget *condeiWidget = new RotatingRectWidget(400,400);
-    RoundedGraphics *valuesWidget = new RoundedGraphics(400, 200, QColor("#31395e"));
+    RoundedGraphichParametrs *valuesWidget = new RoundedGraphichParametrs(400, 200, NULL);
     RoundedGraphicsStatus *statusWidget = new RoundedGraphicsStatus(400, 400);
     RoundedSettingsWidget *settingsWidget = new RoundedSettingsWidget(400,768);
     QPushButton *settingsButton = new QPushButton("Settings");
@@ -36,7 +37,7 @@ int main(int argc, char *argv[])
     setTemperatureWidget->SetHeader("Temperature");
     settingsWidget->hide();
 
-    valuesWidget->SetText("100 \n 200");
+    valuesWidget->SetText("T: 100\tH: 200\nP: 200\t<: 23");
 
     statusWidget->SetColor(QColor("#31395e"));
 
@@ -58,6 +59,7 @@ int main(int argc, char *argv[])
 
    QMainWindow window;
 
+   window.resize(1200,1200);
    window.setCentralWidget(new GraphicsView(&scene, &window));
    window.show();
 
@@ -69,5 +71,6 @@ int main(int argc, char *argv[])
    QObject::connect(condeiWidget, &RotatingRectWidget::changeAngle, dev, &Device::GetAngle);
    QObject::connect(dev, &Device::sendPowerSignal, statusWidget, &RoundedGraphicsStatus::GetPowerOfSignal);
    QObject::connect(dev, &Device::sendTempOfSystem, statusWidget, &RoundedGraphicsStatus::GetTempOfSystem);
+   QObject::connect(dev, &Device::sendParametrs, valuesWidget, &RoundedGraphichParametrs::getParametrs);
    return a.exec();
 }
