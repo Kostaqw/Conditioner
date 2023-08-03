@@ -3,6 +3,9 @@
 RoundedGraphichParametrs::RoundedGraphichParametrs(int width, int height, QWidget* parent) : RoundedGraphics(width, height, parent)
 {
     m_color = QColor("#31395e");
+
+    m_textFont = QFont("Arial", 30);
+    m_textFont.setBold(true);
 }
 
 void RoundedGraphichParametrs :: paintEvent(QPaintEvent *event)
@@ -27,8 +30,54 @@ void RoundedGraphichParametrs :: paintEvent(QPaintEvent *event)
       painter.drawText(textRect, m_text, textOption);
 }
 
+void RoundedGraphichParametrs::getAngle(int value)
+{
+    m_angle = value;
+    updateWidget();
+}
+
 void RoundedGraphichParametrs::getParametrs(int temp, int pressure, int humidity, int angle)
 {
-    m_text = "T: "+ QString::number(temp)+ " \t\t\tH: " + QString::number(humidity) + "\nP: " + QString::number(pressure) + "\t\t<: " + QString::number(angle);
-    update();
+  m_temp_c = temp;
+  m_temp_f = (temp*9/5)+32;
+  m_temp_k = temp-273;
+
+  m_pres_mm = pressure;
+  m_pres_p = pressure * 133;
+
+  m_hum = humidity;
+  m_angle = angle;
+
+  updateWidget();
+}
+
+void RoundedGraphichParametrs::updateWidget()
+{
+
+  QString temper;
+  QString pressure;
+  if(Settings::instance().readSetting("temperature", "") == "C")
+    {
+       temper = "T: "+ QString::number(m_temp_c) + "°C";
+    }
+  else if(Settings::instance().readSetting("temperature", "") == "F")
+    {
+       temper = "T: "+ QString::number(m_temp_f) + "°F";
+    }
+  else
+    {
+       temper = "T: "+ QString::number(m_temp_k) + "K";
+    }
+
+  if(Settings::instance().readSetting("pressure", "") == "Mm")
+    {
+       pressure = "P: " + QString::number(m_pres_mm) + "Mm";
+    }
+  else
+    {
+       pressure = "P: " + QString::number(m_pres_p) + "P";
+    }
+
+  m_text = temper+ " \t\t\tH: " + QString::number(m_hum) + "%" + "\n" + pressure + "\t\t<: " + QString::number(m_angle)+"°";
+  update();
 }

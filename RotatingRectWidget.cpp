@@ -67,9 +67,6 @@ void RotatingRectWidget::drawRectangles(QPainter* painter)
 
     painter->setBrush(QColor("#ffffff"));
 
-    //painter->setPen(Qt::NoPen);
-
-
     painter->translate(targetX1, targetY1);
     painter->rotate(-m_rotationAngle);
     painter->drawRect(-rectWidth / 2, -rectHeigth / 2, rectWidth, rectHeigth);
@@ -127,5 +124,12 @@ void RotatingRectWidget::drawAirflow(QPainter* painter)
 void RotatingRectWidget::rotateRectangles(int angle)
 {
     m_rotationAngle = angle;
+    update();
+}
+
+void RotatingRectWidget::getAngle(int angle)
+{
+    m_rotationAngle = angle;
+    m_slider->setValue(m_rotationAngle);
     update();
 }

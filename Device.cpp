@@ -113,6 +113,10 @@ Device::Device(QWidget *parent) : QWidget(parent)
 
         if(p1 && p2 && p3 && p4)
         {
+            m_tempLabel->setText("T: " + QString::number(temp));
+            m_pressureLabel->setText("P: " + QString::number(press));
+            m_humidityLabel->setText("H: "+QString::number(humm));
+            m_angleLabel->setText("<: "+QString::number(angle));
             emit sendParametrs(temp, press, humm, angle);
         }
     });

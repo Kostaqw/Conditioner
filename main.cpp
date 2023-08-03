@@ -16,9 +16,15 @@
 #include "RoundedGraphicsStatus.h"
 #include "RoundedSettingsWidget.h"
 #include "RoundedGraphichParametrs.h"
+#include "Settings.h"
 
 int main(int argc, char *argv[])
 {
+    Settings::instance().writeSetting("temperature", "C");
+    Settings::instance().writeSetting("pressure", "P");
+    Settings::instance().writeSetting("theme", "dark");
+    Settings::instance().writeSetting("humidity", "%");
+
     QApplication a(argc, argv);
 
     Device *dev = new Device();
@@ -63,14 +69,17 @@ int main(int argc, char *argv[])
    window.setCentralWidget(new GraphicsView(&scene, &window));
    window.show();
 
-    dev->show();
+   dev->show();
    QObject::connect(settingsButton, &QPushButton::clicked, [=](){settingsWidget->show();});
    QObject::connect(setTemperatureWidget, &RoundedGraphicsWithSlider::sendTemp, dev, &Device::GetTemp);
    QObject::connect(statusWidget, &RoundedGraphicsStatus::ChangePower, dev, &Device::GetPowerStatus);
    QObject::connect(statusWidget, &RoundedGraphicsStatus::ChangeFan, dev, &Device::GetFanStatus);
    QObject::connect(condeiWidget, &RotatingRectWidget::changeAngle, dev, &Device::GetAngle);
+    QObject::connect(condeiWidget, &RotatingRectWidget::changeAngle, valuesWidget, &RoundedGraphichParametrs::getAngle);
    QObject::connect(dev, &Device::sendPowerSignal, statusWidget, &RoundedGraphicsStatus::GetPowerOfSignal);
    QObject::connect(dev, &Device::sendTempOfSystem, statusWidget, &RoundedGraphicsStatus::GetTempOfSystem);
    QObject::connect(dev, &Device::sendParametrs, valuesWidget, &RoundedGraphichParametrs::getParametrs);
+   QObject::connect(dev, &Device::sendParametrs, condeiWidget, [condeiWidget](int temp, int pressure, int humidity, int angle){condeiWidget->getAngle(angle);});
+   QObject::connect(settingsWidget, &RoundedSettingsWidget::changeSettings, valuesWidget, &RoundedGraphichParametrs::updateWidget);
    return a.exec();
 }

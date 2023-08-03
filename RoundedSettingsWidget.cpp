@@ -121,8 +121,14 @@ void RoundedSettingsWidget::CreateElements(int width, int height)
     QObject::connect(&m_buttonDark, &QPushButton::clicked, this, &RoundedSettingsWidget::darlButtonClicked);
 }
 
+void RoundedSettingsWidget::UpdatePainter()
+{
+  update();
+}
+
 void RoundedSettingsWidget::saveButtonClicked()
 {
+    emit changeSettings();
     this->hide();
 }
 
@@ -131,6 +137,8 @@ void RoundedSettingsWidget::celstButtonClicked()
     m_buttonCelsie.setStyleSheet(m_activeButoonStyle);
     m_buttonFarhengeit.setStyleSheet(m_inActiveButoonStyle);
     m_buttonKelvin.setStyleSheet(m_inActiveButoonStyle);
+    Settings::instance().writeSetting("temperature", "C");
+
 }
 
 void RoundedSettingsWidget::farhButtonClicked()
@@ -138,6 +146,7 @@ void RoundedSettingsWidget::farhButtonClicked()
     m_buttonCelsie.setStyleSheet(m_inActiveButoonStyle);
     m_buttonFarhengeit.setStyleSheet(m_activeButoonStyle);
     m_buttonKelvin.setStyleSheet(m_inActiveButoonStyle);
+    Settings::instance().writeSetting("temperature", "F");
 }
 
 void RoundedSettingsWidget::kelvButtonClicked()
@@ -145,29 +154,34 @@ void RoundedSettingsWidget::kelvButtonClicked()
     m_buttonCelsie.setStyleSheet(m_inActiveButoonStyle);
     m_buttonFarhengeit.setStyleSheet(m_inActiveButoonStyle);
     m_buttonKelvin.setStyleSheet(m_activeButoonStyle);
+    Settings::instance().writeSetting("temperature", "K");
 }
 
 void RoundedSettingsWidget::pascalButtonClicked()
 {
     m_buttonPascal.setStyleSheet(m_activeButoonStyle);
     m_buttonMM.setStyleSheet(m_inActiveButoonStyle);
+    Settings::instance().writeSetting("pressure", "P");
+
 }
 
 void RoundedSettingsWidget::hgButtonClicked()
 {
     m_buttonPascal.setStyleSheet(m_inActiveButoonStyle);
     m_buttonMM.setStyleSheet(m_activeButoonStyle);
+    Settings::instance().writeSetting("pressure", "Mm");
 }
 
 void RoundedSettingsWidget::lightButtonClicked()
 {
     m_buttonLigt.setStyleSheet(m_activeButoonStyle);
     m_buttonDark.setStyleSheet(m_inActiveButoonStyle);
-
+    Settings::instance().writeSetting("theme", "light");
 }
 
 void RoundedSettingsWidget::darlButtonClicked()
 {
     m_buttonLigt.setStyleSheet(m_inActiveButoonStyle);
     m_buttonDark.setStyleSheet(m_activeButoonStyle);
+    Settings::instance().writeSetting("theme", "dark");
 }

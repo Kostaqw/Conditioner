@@ -1,9 +1,11 @@
 #pragma once
 
+#include "Settings.h"
 #include "RoundedGraphics.h"
 #include "QPushButton"
 class RoundedSettingsWidget : public RoundedGraphics
 {
+  Q_OBJECT
 public:
     RoundedSettingsWidget(int width, int height, QWidget* parent = nullptr);
 protected:
@@ -29,6 +31,12 @@ private:
 
     void CreateElements(int width, int height);
 
+signals:
+    void changeSettings();
+
+public slots:
+    void UpdatePainter();
+
 private slots:
     void saveButtonClicked();
     void celstButtonClicked();
@@ -39,4 +47,3 @@ private slots:
     void lightButtonClicked();
     void darlButtonClicked();
 };
-

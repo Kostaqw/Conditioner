@@ -63,4 +63,3 @@ public slots:
     void GetFanStatus(bool fan);
     void GetAngle(int angle);
 };
-

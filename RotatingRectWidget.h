@@ -14,6 +14,7 @@ public:
 
 public slots:
     void rotateRectangles(int angle);
+    void getAngle(int angle);
 
 protected:
     void paintEvent(QPaintEvent *event) override;
@@ -28,4 +29,5 @@ private:
 
 signals:
     void changeAngle(int angle);
+
 };
