@@ -9,8 +9,11 @@ class RoundedGraphicsWithSlider : public RoundedGraphics
 public:
     RoundedGraphicsWithSlider(int width, int height, QWidget* parent = nullptr);
 
+
 private slots:
     void handleSliderValueChanged(int value);
+public slots:
+    void setTemp(int value);
 
 private:
     QSlider* m_slider;

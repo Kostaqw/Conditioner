@@ -25,7 +25,8 @@ private:
     int m_rotationAngle;
     QSlider* m_slider;
     QTimer* m_timer;
-    QPixmap m_image;
+    QPixmap m_whiteImage;
+    QPixmap m_blackImage;
 
 signals:
     void changeAngle(int angle);

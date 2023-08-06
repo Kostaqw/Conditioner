@@ -14,14 +14,18 @@ public:
     void SetHeaderFont(QFont *headerFon);
     void SetTextFont(QFont *textFont);
     ~RoundedGraphics();
+
+public slots:
+    virtual void getTheme();
+
 protected:
     void paintEvent(QPaintEvent *event) override;
-    void drawShadow(QPainter* painter, const QRect& rect);
+    void drawMainRectangle(QPainter* painter, const QRect& rect);
 
     bool m_isHeader = false;
 
-    QColor m_color;
     QColor m_shadowColor;
+    QColor m_mainColor;
 
     QString m_text;
     QString m_header;
@@ -30,8 +34,6 @@ protected:
     QFont m_textFont;
 
 private:
-
-
 
     int m_width;
     int m_height;

@@ -1,10 +1,11 @@
 #include "RoundedGraphicsStatus.h"
+#include "Settings.h"
 
 RoundedGraphicsStatus::RoundedGraphicsStatus(int width, int height, QWidget* parent)
     : RoundedGraphics(width, height, parent)
 {
    CreateStatusMap();
-   m_color = QColor("#31395e");
+   m_shadowColor = QColor("#31395e");
 }
 
 
@@ -14,9 +15,9 @@ void RoundedGraphicsStatus::paintEvent(QPaintEvent *event)
 
     QPainter painter(this);
 
-    painter.setBrush(m_color);
+    painter.setBrush(m_shadowColor);
     painter.drawRoundedRect(rect(), 10, 10);
-    drawShadow(&painter, rect());
+    drawMainRectangle(&painter, rect());
 
     painter.drawPixmap(0,0, m_statusMap.value(m_powerStatus));
     painter.drawPixmap(width()/100*48,0, m_statusMap.value(m_signalStatus));
@@ -49,32 +50,41 @@ void RoundedGraphicsStatus::mousePressEvent(QMouseEvent *event)
     }
     if(x > sizeIcon && x < width() && y > sizeIcon && y < height())
     {
-        if(m_fanStatus == CondeiStatus::Black_fan_on)
+        if(Settings::instance().readSetting("theme")=="light")
         {
-            m_fanStatus = CondeiStatus::Black_fan_off;
-            emit ChangeFan(false);
-            update();
+            if(m_fanStatus == CondeiStatus::Black_fan_on)
+            {
+                m_fanStatus = CondeiStatus::Black_fan_off;
+                emit ChangeFan(false);
+                update();
+                return;
+            }
+            else
+            {
+                m_fanStatus = CondeiStatus::Black_fan_on;
+                emit ChangeFan(true);
+                update();
+                return;
+            }
             return;
         }
-        else if(m_fanStatus == CondeiStatus::Black_fan_off)
+
+        if(Settings::instance().readSetting("theme")=="dark")
         {
-            m_fanStatus = CondeiStatus::Black_fan_on;
-            emit ChangeFan(true);
-            update();
+            if(m_fanStatus == CondeiStatus::White_fan_on)
+            {
+                m_fanStatus = CondeiStatus::White_fan_off;
+                emit ChangeFan(false);
+                update();
+                return;
+            }
+            else
+            {
+                m_fanStatus = CondeiStatus::White_fan_on;
+                emit ChangeFan(true);
+                update();
+            }
             return;
-        }
-        else if(m_fanStatus == CondeiStatus::White_fan_on)
-        {
-            m_fanStatus = CondeiStatus::White_fan_off;
-            emit ChangeFan(false);
-            update();
-            return;
-        }
-        else
-        {
-            m_fanStatus = CondeiStatus::White_fan_on;
-            emit ChangeFan(true);
-            update();
         }
     }
 }
@@ -142,4 +152,52 @@ void RoundedGraphicsStatus::GetPowerOfSignal(powerSignal signal)
         m_signalStatus = CondeiStatus::Signal_3;
     }
     update();
+}
+
+void RoundedGraphicsStatus::getTheme()
+{
+    if (Settings::instance().readSetting("theme") == "dark")
+    {
+        m_mainColor = QColor(Settings::instance().readSetting("darkBackgroundColor", ""));
+        m_shadowColor = QColor(Settings::instance().readSetting("darkShadowColor", ""));
+    }
+    else
+    {
+        m_mainColor = QColor(Settings::instance().readSetting("lightBackgroundColor", ""));
+        m_shadowColor = QColor(Settings::instance().readSetting("lightShadowColor", ""));
+    }
+
+    if(Settings::instance().readSetting("theme")=="light")
+    {
+        if(m_fanStatus == CondeiStatus::Black_fan_on)
+        {
+            m_fanStatus = CondeiStatus::White_fan_on;
+            update();
+            return;
+        }
+        else
+        {
+            m_fanStatus = CondeiStatus::Black_fan_off;
+            update();
+            return;
+        }
+        return;
+    }
+
+    if(Settings::instance().readSetting("theme")=="dark")
+    {
+        if(m_fanStatus == CondeiStatus::White_fan_on)
+        {
+            m_fanStatus = CondeiStatus::White_fan_on;
+            update();
+            return;
+        }
+        else
+        {
+            m_fanStatus = CondeiStatus::White_fan_off;
+            emit ChangeFan(true);
+            update();
+        }
+        return;
+    }
 }

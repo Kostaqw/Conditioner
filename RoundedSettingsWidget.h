@@ -36,6 +36,7 @@ signals:
 
 public slots:
     void UpdatePainter();
+    void getButtonState(QString temp, QString pressure, QString theme);
 
 private slots:
     void saveButtonClicked();

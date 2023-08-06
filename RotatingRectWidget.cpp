@@ -2,6 +2,7 @@
 
 #include <QPainter>
 #include <QDebug>
+#include "Settings.h"
 
 RotatingRectWidget::RotatingRectWidget(int width, int height, QWidget *parent)
     : RoundedGraphics(width, height, parent), m_rotationAngle(0)
@@ -9,7 +10,7 @@ RotatingRectWidget::RotatingRectWidget(int width, int height, QWidget *parent)
 
     setFixedSize(width, height);
 
-    m_color = QColor("#31395e");
+    m_shadowColor = QColor("#31395e");
 
     m_slider = new QSlider(Qt::Vertical, this);
     m_slider->setGeometry(width /100*80, height/100*5, 30, height /100*90);
@@ -35,7 +36,8 @@ RotatingRectWidget::RotatingRectWidget(int width, int height, QWidget *parent)
                           "}");
     connect(m_slider, &QSlider::valueChanged, this, &RotatingRectWidget::rotateRectangles);
 
-    m_image = QPixmap("/home/kostaqw/Conditioner/img/white.png");
+    m_whiteImage = QPixmap("/home/kostaqw/Conditioner/img/white.png");
+    m_blackImage = QPixmap("/home/kostaqw/Conditioner/img/black.png");
 }
 
 void RotatingRectWidget::paintEvent(QPaintEvent *event)
@@ -50,37 +52,60 @@ void RotatingRectWidget::paintEvent(QPaintEvent *event)
 
 void RotatingRectWidget::drawRectangles(QPainter* painter)
 {
-    painter->setBrush(m_color);
+    painter->setBrush(m_shadowColor);
     painter->drawRoundedRect(rect(), 10, 10);
-    drawShadow(painter, rect());
+    drawMainRectangle(painter, rect());
     painter->save();
 
     float rectWidth = width()/100*2;
     float rectHeigth = height()/100*10;
 
-    int targetX1 = width()/100*45;
+    int targetX1 = width()/100*52;
     int targetY1 = width()/100*15;
-    int targetX2 = width()/100*45;
+    int targetX2 = width()/100*52;
     int targetY2 = width()/100*25;
-    int targetX3 = width()/100*45;
+    int targetX3 = width()/100*52;
     int targetY3 = width()/100*35;
 
-    painter->setBrush(QColor("#ffffff"));
+    if(Settings::instance().readSetting("theme")=="light")
+    {
+        painter->setBrush(QColor("#000000"));
 
+    }
+    else
+    {
+        painter->setBrush(QColor("#ffffff"));
+    }
     painter->translate(targetX1, targetY1);
     painter->rotate(-m_rotationAngle);
     painter->drawRect(-rectWidth / 2, -rectHeigth / 2, rectWidth, rectHeigth);
     painter->restore();
 
     painter->save();
-    painter->setBrush(QColor("#ffffff"));
+    if(Settings::instance().readSetting("theme")=="light")
+    {
+        painter->setBrush(QColor("#000000"));
+
+    }
+    else
+    {
+        painter->setBrush(QColor("#ffffff"));
+    }
     painter->translate(targetX2 , targetY2);
     painter->rotate(-m_rotationAngle);
     painter->drawRect(-rectWidth / 2, -rectHeigth / 2, rectWidth, rectHeigth);
     painter->restore();
 
     painter->save();
-    painter->setBrush(QColor("#ffffff"));
+    if(Settings::instance().readSetting("theme")=="light")
+    {
+        painter->setBrush(QColor("#000000"));
+
+    }
+    else
+    {
+        painter->setBrush(QColor("#ffffff"));
+    }
     painter->translate(targetX3 , targetY3);
     painter->rotate(-m_rotationAngle);
     painter->drawRect(-rectWidth / 2, -rectHeigth / 2, rectWidth, rectHeigth);
@@ -95,11 +120,20 @@ void RotatingRectWidget::drawAirflow(QPainter* painter)
 
     int targetWidth = width() /100 * 90;
     int targetHeight = height() /100 * 90;
-    QSize imageSize = m_image.size();
+    QSize imageSize = m_blackImage.size();
     imageSize.scale(targetWidth, targetHeight, Qt::KeepAspectRatio);
 
     painter->setRenderHint(QPainter::Antialiasing);
-    painter->drawPixmap(width()/100*2,height()/100*2, imageSize.width(), imageSize.height(), m_image);
+    if(Settings::instance().readSetting("theme")=="light")
+    {
+        painter->drawPixmap(width()/100*2,height()/100*2, imageSize.width(), imageSize.height(), m_blackImage);
+
+    }
+    else
+    {
+        painter->drawPixmap(width()/100*2,height()/100*2, imageSize.width(), imageSize.height(), m_whiteImage);
+    }
+
     painter->restore();
     /*
     painter->save();

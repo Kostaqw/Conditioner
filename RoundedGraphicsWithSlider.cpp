@@ -1,6 +1,6 @@
 #include "RoundedGraphicsWithSlider.h"
 #include <QStyle>
-
+#include "Settings.h"
 RoundedGraphicsWithSlider::RoundedGraphicsWithSlider(int width, int height, QWidget* parent)
     : RoundedGraphics(width, height, parent)
 {
@@ -35,5 +35,12 @@ void RoundedGraphicsWithSlider::handleSliderValueChanged(int value)
 {
     SetText(QString::number(value) + " C");
     emit sendTemp(value);
+    update();
+    Settings::instance().writeSetting("setTemp",QString::number(value));
+}
+
+void RoundedGraphicsWithSlider::setTemp(int value)
+{
+    m_slider->setValue(value);
     update();
 }

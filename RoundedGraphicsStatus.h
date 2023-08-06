@@ -34,5 +34,6 @@ signals:
 public slots:
     void GetTempOfSystem(temperatureOfSystem temp);
     void GetPowerOfSignal(powerSignal signal);
+    void getTheme() override;
 };
 

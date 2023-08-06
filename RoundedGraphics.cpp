@@ -1,7 +1,10 @@
 #include "RoundedGraphics.h"
 #include <QPainter>
 #include <QGraphicsDropShadowEffect>
-
+#include <QDebug>
+#include "Settings.h"
+#include "QDebug"
+#include "Settings.h"
 
 RoundedGraphics::RoundedGraphics(int width, int height, QWidget *parent) : QWidget(parent), m_width(width), m_height(height)
 {
@@ -15,7 +18,7 @@ RoundedGraphics::RoundedGraphics(int width, int height, QWidget *parent) : QWidg
 }
 
 RoundedGraphics::RoundedGraphics(int width, int height, const QColor& color, QWidget *parent) :
-    QWidget(parent), m_width(width), m_height(height), m_color(color)
+    QWidget(parent), m_width(width), m_height(height), m_shadowColor(color)
 {
     setFixedSize(m_width, m_height);
     setAttribute(Qt::WA_TranslucentBackground);
@@ -29,20 +32,21 @@ RoundedGraphics::RoundedGraphics(int width, int height, const QColor& color, QWi
 
 void RoundedGraphics :: paintEvent(QPaintEvent *event)
 {
+
    Q_UNUSED(event);
    QPainter painter(this);
+
    painter.setRenderHint(QPainter::Antialiasing);
 
    painter.setPen(Qt::NoPen);
-   painter.setBrush(m_color);
+   painter.setBrush(m_shadowColor);
    painter.drawRoundedRect(rect(), 10, 10);
+   drawMainRectangle(&painter, rect());
 
 
-   drawShadow(&painter, rect());
 
    if(m_isHeader)
    {
-
        painter.setFont(m_headerFont);
 
        QFontMetrics fm(m_headerFont);
@@ -52,9 +56,17 @@ void RoundedGraphics :: paintEvent(QPaintEvent *event)
        int x = (width() - textWidth) / 2;
        int y = textHeight;
 
-       painter.setPen(Qt::white);
+       if(Settings::instance().readSetting("theme")=="dark")
+       {
+        painter.setPen(Qt::white);
+       }
+       else
+       {
+        painter.setPen(Qt::black);
+       }
        painter.drawText(x, y, m_header);
    }
+
    if(m_text != nullptr)
    {
        painter.setFont(m_textFont);
@@ -77,12 +89,12 @@ void RoundedGraphics::SetText(qreal value)
 }
 void RoundedGraphics::SetColor(QColor color)
 {
-    m_color = color;
+    m_mainColor = color;
 }
 void RoundedGraphics::SetColor(QColor color, QColor shadow)
 {
-    m_color = color;
     m_shadowColor = shadow;
+    m_mainColor = color;
 }
 void RoundedGraphics::SetHeader(QString header)
 {
@@ -96,18 +108,18 @@ void RoundedGraphics::SetHeaderFont(QFont *headerFont)
 }
 void RoundedGraphics::SetTextFont(QFont *textFont)
 {
-
     m_textFont = *textFont;
 }
-void RoundedGraphics::drawShadow(QPainter* painter, const QRect& rect)
+void RoundedGraphics::drawMainRectangle(QPainter* painter, const QRect& rect)
 {
-    if(m_shadowColor == nullptr)
+    if (!m_mainColor.isValid())
     {
-        m_shadowColor = *new QColor(0, 0, 0, 100);
+        m_mainColor = QColor(0, 0, 0, 100);
     }
     painter->setPen(Qt::NoPen);
-    painter->setBrush(m_shadowColor);
+    painter->setBrush(m_mainColor);
     painter->drawRoundedRect(rect.adjusted(5, 5, -5, -5), 10, 10);
+
 }
 
 
@@ -115,4 +127,23 @@ void RoundedGraphics::drawShadow(QPainter* painter, const QRect& rect)
 RoundedGraphics::~RoundedGraphics()
 {
 
+}
+
+void RoundedGraphics::getTheme()
+{
+
+
+    if (Settings::instance().readSetting("theme") == "dark")
+    {
+        qDebug() << "set dark theme maincolor = " << Settings::instance().readSetting("darkMainColor", "") << " shadowColor = " << Settings::instance().readSetting("darkShadowColor", "");
+        m_mainColor = QColor(Settings::instance().readSetting("darkBackgroundColor", ""));
+        m_shadowColor = QColor(Settings::instance().readSetting("darkShadowColor", ""));
+    }
+    else
+    {
+        qDebug() << "set light theme maincolor = " << Settings::instance().readSetting("lightBackgroundColor", "") << " shadowColor = " << Settings::instance().readSetting("lightShadowColor", "");
+        m_mainColor = QColor(Settings::instance().readSetting("lightBackgroundColor", ""));
+        m_shadowColor = QColor(Settings::instance().readSetting("lightShadowColor", ""));
+    }
+    update();
 }

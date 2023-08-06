@@ -18,13 +18,24 @@
 #include "RoundedGraphichParametrs.h"
 #include "Settings.h"
 
+void createColorsSettings()
+{
+
+        Settings::instance().writeSetting("darkBackgroundColor", "#18213d");
+
+        Settings::instance().writeSetting("darkMainColor", "#31395e");
+
+
+        Settings::instance().writeSetting("lightBackgroundColor", "#F0F0F0");
+
+        Settings::instance().writeSetting("lightMainColor", "#D3D3D3");
+
+        Settings::instance().writeSetting("lightShadowColor", "#A0A0A0");
+}
+
 int main(int argc, char *argv[])
 {
-    Settings::instance().writeSetting("temperature", "C");
-    Settings::instance().writeSetting("pressure", "P");
-    Settings::instance().writeSetting("theme", "dark");
-    Settings::instance().writeSetting("humidity", "%");
-
+    createColorsSettings();
     QApplication a(argc, argv);
 
     Device *dev = new Device();
@@ -42,8 +53,6 @@ int main(int argc, char *argv[])
     setTemperatureWidget->SetColor(QColor("#31395e"));
     setTemperatureWidget->SetHeader("Temperature");
     settingsWidget->hide();
-
-    valuesWidget->SetText("T: 100\tH: 200\nP: 200\t<: 23");
 
     statusWidget->SetColor(QColor("#31395e"));
 
@@ -69,17 +78,36 @@ int main(int argc, char *argv[])
    window.setCentralWidget(new GraphicsView(&scene, &window));
    window.show();
 
+
    dev->show();
+   QObject::connect(dev, &Device::sendParametrs, valuesWidget, &RoundedGraphichParametrs::getParametrs);
    QObject::connect(settingsButton, &QPushButton::clicked, [=](){settingsWidget->show();});
    QObject::connect(setTemperatureWidget, &RoundedGraphicsWithSlider::sendTemp, dev, &Device::GetTemp);
+
    QObject::connect(statusWidget, &RoundedGraphicsStatus::ChangePower, dev, &Device::GetPowerStatus);
    QObject::connect(statusWidget, &RoundedGraphicsStatus::ChangeFan, dev, &Device::GetFanStatus);
+
    QObject::connect(condeiWidget, &RotatingRectWidget::changeAngle, dev, &Device::GetAngle);
-    QObject::connect(condeiWidget, &RotatingRectWidget::changeAngle, valuesWidget, &RoundedGraphichParametrs::getAngle);
+   QObject::connect(condeiWidget, &RotatingRectWidget::changeAngle, valuesWidget, &RoundedGraphichParametrs::getAngle);
+
    QObject::connect(dev, &Device::sendPowerSignal, statusWidget, &RoundedGraphicsStatus::GetPowerOfSignal);
    QObject::connect(dev, &Device::sendTempOfSystem, statusWidget, &RoundedGraphicsStatus::GetTempOfSystem);
-   QObject::connect(dev, &Device::sendParametrs, valuesWidget, &RoundedGraphichParametrs::getParametrs);
    QObject::connect(dev, &Device::sendParametrs, condeiWidget, [condeiWidget](int temp, int pressure, int humidity, int angle){condeiWidget->getAngle(angle);});
+
    QObject::connect(settingsWidget, &RoundedSettingsWidget::changeSettings, valuesWidget, &RoundedGraphichParametrs::updateWidget);
+   QObject::connect(settingsWidget, &RoundedSettingsWidget::changeSettings, backGroundWidget, &RoundedGraphics::getTheme);
+   QObject::connect(settingsWidget, &RoundedSettingsWidget::changeSettings, setTemperatureWidget, &RoundedGraphics::getTheme);
+   QObject::connect(settingsWidget, &RoundedSettingsWidget::changeSettings, condeiWidget, &RoundedGraphics::getTheme);
+   QObject::connect(settingsWidget, &RoundedSettingsWidget::changeSettings, valuesWidget, &RoundedGraphics::getTheme);
+   QObject::connect(settingsWidget, &RoundedSettingsWidget::changeSettings, statusWidget, &RoundedGraphics::getTheme);
+   QObject::connect(settingsWidget, &RoundedSettingsWidget::changeSettings, settingsWidget, &RoundedGraphics::getTheme);
+
+   QObject::connect(&a, &QCoreApplication::aboutToQuit, &Settings::instance(), &Settings::saveToXml);
+   QObject::connect(&Settings::instance(), &Settings::sendButtonStates, settingsWidget, &RoundedSettingsWidget::getButtonState);
+   QObject::connect(&Settings::instance(), &Settings::sendSetedTemperature,setTemperatureWidget, &RoundedGraphicsWithSlider::setTemp);
+
+   dev->sendParametrs(QRandomGenerator::global()->bounded(10,30), QRandomGenerator::global()->bounded(1000,2000),QRandomGenerator::global()->bounded(5,95),0);
+   Settings::instance().loadSettingsFromXml();
+
    return a.exec();
 }

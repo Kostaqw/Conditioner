@@ -13,9 +13,9 @@ void RoundedSettingsWidget::paintEvent(QPaintEvent *event)
 
     QPainter painter(this);
 
-    painter.setBrush(m_color);
+    painter.setBrush(m_shadowColor);
     painter.drawRoundedRect(rect(), 10, 10);
-    drawShadow(&painter, rect());
+    drawMainRectangle(&painter, rect());
 }
 
 void RoundedSettingsWidget::CreateElements(int width, int height)
@@ -60,7 +60,7 @@ void RoundedSettingsWidget::CreateElements(int width, int height)
     presureGraduate->setGeometry(x,height/100*45, labelWidth,labelHeight);
     themeLabel->setGeometry(x,height/100*70, labelWidth,labelHeight);
 
-    m_color = QColor("#31395e");
+    m_shadowColor = QColor("#31395e");
 
 
     m_buttonCelsie.setText("C");
@@ -123,7 +123,41 @@ void RoundedSettingsWidget::CreateElements(int width, int height)
 
 void RoundedSettingsWidget::UpdatePainter()
 {
-  update();
+    update();
+}
+
+void RoundedSettingsWidget::getButtonState(QString temp, QString pressure, QString theme)
+{
+    if(temp=="C")
+    {
+        celstButtonClicked();
+    }
+    else if(temp=="F")
+    {
+        farhButtonClicked();
+    }
+    else
+    {
+        kelvButtonClicked();
+    }
+
+    if(pressure=="P")
+    {
+        pascalButtonClicked();
+    }
+    else
+    {
+        hgButtonClicked();
+    }
+
+    if(theme=="dark")
+    {
+        darlButtonClicked();
+    }
+    else
+    {
+        lightButtonClicked();
+    }
 }
 
 void RoundedSettingsWidget::saveButtonClicked()

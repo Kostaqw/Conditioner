@@ -2,7 +2,7 @@
 
 RoundedGraphichParametrs::RoundedGraphichParametrs(int width, int height, QWidget* parent) : RoundedGraphics(width, height, parent)
 {
-    m_color = QColor("#31395e");
+    m_shadowColor = QColor("#31395e");
 
     m_textFont = QFont("Arial", 30);
     m_textFont.setBold(true);
@@ -17,16 +17,25 @@ void RoundedGraphichParametrs :: paintEvent(QPaintEvent *event)
       painter.setRenderHint(QPainter::Antialiasing);
 
       painter.setPen(Qt::NoPen);
-      painter.setBrush(m_color);
+      painter.setBrush(m_shadowColor);
       painter.drawRoundedRect(rect(), 10, 10);
 
-      drawShadow(&painter, rect());
+      drawMainRectangle(&painter, rect());
 
       painter.setFont(m_textFont);
       QRect textRect = QRect(width()/100*10, height()/100*20, width(), height());
       QTextOption textOption;
       textOption.setWrapMode(QTextOption::WordWrap);
-      painter.setPen(Qt::white);
+
+      if(Settings::instance().readSetting("theme")=="dark")
+      {
+       painter.setPen(Qt::white);
+      }
+      else
+      {
+       painter.setPen(Qt::black);
+      }
+
       painter.drawText(textRect, m_text, textOption);
 }
 
