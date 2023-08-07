@@ -91,7 +91,7 @@ void RoundedGraphicsStatus::mousePressEvent(QMouseEvent *event)
 
 void RoundedGraphicsStatus::CreateStatusMap()
 {
-    QPixmap spriteSheet("/home/kostaqw/Conditioner/img/status.png");
+    QPixmap spriteSheet(":/img/img/status.png");
 
     m_statusMap.insert(CondeiStatus::Power_on,spriteSheet.copy(0,0,180,180));
     m_statusMap.insert(CondeiStatus::Power_off,spriteSheet.copy(180,0,180,180));

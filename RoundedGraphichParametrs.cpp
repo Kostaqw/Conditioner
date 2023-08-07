@@ -3,9 +3,28 @@
 RoundedGraphichParametrs::RoundedGraphichParametrs(int width, int height, QWidget* parent) : RoundedGraphics(width, height, parent)
 {
     m_shadowColor = QColor("#31395e");
-
     m_textFont = QFont("Arial", 30);
     m_textFont.setBold(true);
+
+    m_tempLabel = new QLabel("T: ", this);
+    m_pressureLabel = new QLabel("P: ", this);
+    m_humidityLabel = new QLabel("H: ", this);
+    m_angleLabel = new QLabel("<",this);
+
+    m_tempLabel->setFont(m_textFont);
+    m_pressureLabel->setFont(m_textFont);
+    m_humidityLabel->setFont(m_textFont);
+    m_angleLabel->setFont(m_textFont);
+
+
+    int labelWidth = width/100*45;
+    int labelHeight = height/100*45;
+
+    m_tempLabel->setGeometry(width/100*5, height/100*5, labelWidth, labelHeight);
+    m_pressureLabel->setGeometry(width/100*5, height/100*45, labelWidth, labelHeight);
+    m_humidityLabel->setGeometry(width/100*60, height/100*5, labelWidth, labelHeight);
+    m_angleLabel->setGeometry(width/100*60, height/100*45, labelWidth, labelHeight);
+
 }
 
 void RoundedGraphichParametrs :: paintEvent(QPaintEvent *event)
@@ -36,7 +55,7 @@ void RoundedGraphichParametrs :: paintEvent(QPaintEvent *event)
        painter.setPen(Qt::black);
       }
 
-      painter.drawText(textRect, m_text, textOption);
+
 }
 
 void RoundedGraphichParametrs::getAngle(int value)
@@ -62,31 +81,47 @@ void RoundedGraphichParametrs::getParametrs(int temp, int pressure, int humidity
 
 void RoundedGraphichParametrs::updateWidget()
 {
+    if(Settings::instance().readSetting("theme")=="dark")
+    {
+        m_tempLabel->setStyleSheet("color: white;");
+        m_pressureLabel->setStyleSheet("color: white;");
+        m_humidityLabel->setStyleSheet("color: white;");
+        m_angleLabel->setStyleSheet("color: white;");
+    }
+    else
+    {
+        m_tempLabel->setStyleSheet("color: black;");
+        m_pressureLabel->setStyleSheet("color: black;");
+        m_humidityLabel->setStyleSheet("color: black;");
+        m_angleLabel->setStyleSheet("color: black;");
+    }
 
   QString temper;
   QString pressure;
   if(Settings::instance().readSetting("temperature", "") == "C")
     {
-       temper = "T: "+ QString::number(m_temp_c) + "°C";
+       m_tempLabel->setText("T: "+ QString::number(m_temp_c) + "°C");
     }
   else if(Settings::instance().readSetting("temperature", "") == "F")
     {
-       temper = "T: "+ QString::number(m_temp_f) + "°F";
+       m_tempLabel->setText("T: "+ QString::number(m_temp_f) + "°F");
     }
   else
     {
-       temper = "T: "+ QString::number(m_temp_k) + "K";
+       m_tempLabel->setText("T: "+ QString::number(m_temp_k) + "K");
     }
 
   if(Settings::instance().readSetting("pressure", "") == "Mm")
     {
-       pressure = "P: " + QString::number(m_pres_mm) + "Mm";
+       m_pressureLabel->setText("P: " + QString::number(m_pres_mm) + "Mm");
     }
   else
     {
-       pressure = "P: " + QString::number(m_pres_p) + "P";
+       m_pressureLabel->setText("P: " + QString::number(m_pres_p/1000) + " kP");
     }
 
-  m_text = temper+ " \t\t\tH: " + QString::number(m_hum) + "%" + "\n" + pressure + "\t\t<: " + QString::number(m_angle)+"°";
-  update();
+    m_humidityLabel->setText("H: " + QString::number(m_hum) + "%");
+    m_angleLabel->setText("<: " + QString::number(m_angle)+"°");
+
+    update();
 }

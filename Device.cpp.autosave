@@ -127,7 +127,7 @@ temperatureOfSystem Device::stringToTemperature(const QString &value)
     static const QMap<QString, temperatureOfSystem> stringToEnumMap {
             {"low", temperatureOfSystem::t_low},
             {"mid", temperatureOfSystem::t_mid},
-            {"high", temperatureOfSystem::t_high}
+            {"high", temperatureOfSystem::t_high}Second
         };
         return stringToEnumMap.value(value, temperatureOfSystem::t_low);
 }
@@ -159,48 +159,6 @@ QString Device::temperatureToString(temperatureOfSystem value) {
     };
     return enumToStringMap.value(value, QString());
 }
-/*
-void Device::receiveData(SendData data)
-{
-
-
-    m_pressureLabel->setText("P: " + QString::number(data.m_pressure));
-
-
-
-    if(data.m_signal == powerSignal::s_high)
-    {
-        m_stateSecondBlock->setCurrentIndex(0);
-    }
-    else if(data.m_signal == powerSignal::s_mid)
-    {
-        m_stateSecondBlock->setCurrentIndex(1);
-    }
-    else if(data.m_signal == powerSignal::s_low)
-    {
-        m_stateSecondBlock->setCurrentIndex(2);
-    }
-    else
-    {
-        m_stateSecondBlock->setCurrentIndex(3);
-    }
-
-
-
-
-    if(data.m_temperatureOfSystem == temperatureOfSystem::t_high)
-    {
-        m_stateFourBlock->setCurrentIndex(0);
-    }
-    else if(data.m_temperatureOfSystem == temperatureOfSystem::t_mid)
-    {
-        m_stateFourBlock->setCurrentIndex(1);
-    }
-    else
-    {
-        m_stateFourBlock->setCurrentIndex(2);
-    }
-}*/
 
 void Device::GetTemp(float temp)
 {

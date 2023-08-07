@@ -25,7 +25,6 @@ void createColorsSettings()
 
         Settings::instance().writeSetting("darkMainColor", "#31395e");
 
-
         Settings::instance().writeSetting("lightBackgroundColor", "#F0F0F0");
 
         Settings::instance().writeSetting("lightMainColor", "#D3D3D3");

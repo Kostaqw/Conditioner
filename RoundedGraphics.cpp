@@ -74,7 +74,14 @@ void RoundedGraphics :: paintEvent(QPaintEvent *event)
        QTextOption textOption;
        textOption.setAlignment(Qt::AlignCenter);
        textOption.setWrapMode(QTextOption::WordWrap);
-       painter.setPen(Qt::white);
+       if(Settings::instance().readSetting("theme")=="dark")
+       {
+         painter.setPen(Qt::white);
+       }
+       else
+       {
+         painter.setPen(Qt::black);
+       }
        painter.drawText(textRect, m_text, textOption);
    }
 }
@@ -119,7 +126,6 @@ void RoundedGraphics::drawMainRectangle(QPainter* painter, const QRect& rect)
     painter->setPen(Qt::NoPen);
     painter->setBrush(m_mainColor);
     painter->drawRoundedRect(rect.adjusted(5, 5, -5, -5), 10, 10);
-
 }
 
 

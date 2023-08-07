@@ -52,3 +52,6 @@ DISTFILES += \
     img/black.png \
     img/status.png \
     img/white.png
+
+RESOURCES += \
+    images.qrc

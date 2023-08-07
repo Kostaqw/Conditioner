@@ -3,6 +3,8 @@
 #include "Settings.h"
 #include "RoundedGraphics.h"
 #include "QPushButton"
+#include "QLabel"
+
 class RoundedSettingsWidget : public RoundedGraphics
 {
   Q_OBJECT
@@ -29,6 +31,13 @@ private:
 
     QFont m_textFont;
 
+
+     QLabel *m_tempLabel;
+     QLabel *m_tempGraduate;
+     QLabel *m_presureGraduate;
+     QLabel *m_themeLabel;
+
+
     void CreateElements(int width, int height);
 
 signals:
@@ -37,6 +46,7 @@ signals:
 public slots:
     void UpdatePainter();
     void getButtonState(QString temp, QString pressure, QString theme);
+    void startApp();
 
 private slots:
     void saveButtonClicked();

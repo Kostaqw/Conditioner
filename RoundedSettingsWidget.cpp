@@ -26,39 +26,40 @@ void RoundedSettingsWidget::CreateElements(int width, int height)
     QFont textFont = QFont("Arial",20);
     textFont.setBold(true);
 
-    QLabel *tempLabel = new QLabel("Settings", this);
-    QLabel *tempGraduate = new QLabel("Temperature graduate", this);
-    QLabel *presureGraduate = new QLabel("Pressure graduate", this);
-    QLabel *themeLabel = new QLabel("Theme",this);
+    m_tempLabel= new QLabel("Settings", this);
+    m_tempGraduate = new QLabel("Temperature graduate", this);
+    m_presureGraduate = new QLabel("Pressure graduate", this);
+    m_themeLabel = new QLabel("Theme",this);
 
     int buttonWidth = width / 100 * 25;
     int buttonHeight = height / 100 * 10;
     int spacing = width / 100 * 7;
 
-    tempLabel->setFont(headerFont);
-    tempLabel->setAlignment(Qt::AlignCenter);
-    tempLabel->setStyleSheet("color: white;");
+    m_tempLabel->setFont(headerFont);
+    m_tempLabel->setAlignment(Qt::AlignCenter);
 
-    tempGraduate->setFont(textFont);
-    tempGraduate->setAlignment(Qt::AlignCenter);
-    tempGraduate->setStyleSheet("color: white;");
 
-    presureGraduate->setFont(textFont);
-    presureGraduate->setAlignment(Qt::AlignCenter);
-    presureGraduate->setStyleSheet("color: white;");
+    m_tempGraduate->setFont(textFont);
+    m_tempGraduate->setAlignment(Qt::AlignCenter);
 
-    themeLabel->setFont(textFont);
-    themeLabel->setAlignment(Qt::AlignCenter);
-    themeLabel->setStyleSheet("color: white;");
+
+    m_presureGraduate->setFont(textFont);
+    m_presureGraduate->setAlignment(Qt::AlignCenter);
+
+
+    m_themeLabel->setFont(textFont);
+    m_themeLabel->setAlignment(Qt::AlignCenter);
+
+
 
     int labelWidth = width - width/100*5;
     int labelHeight = 50;
     int x = (width - labelWidth) / 2;
 
-    tempLabel->setGeometry(x, height/100*5, labelWidth, labelHeight);
-    tempGraduate->setGeometry(x,height/100*20, labelWidth,labelHeight);
-    presureGraduate->setGeometry(x,height/100*45, labelWidth,labelHeight);
-    themeLabel->setGeometry(x,height/100*70, labelWidth,labelHeight);
+    m_tempLabel->setGeometry(x, height/100*5, labelWidth, labelHeight);
+    m_tempGraduate->setGeometry(x,height/100*20, labelWidth,labelHeight);
+    m_presureGraduate->setGeometry(x,height/100*45, labelWidth,labelHeight);
+    m_themeLabel->setGeometry(x,height/100*70, labelWidth,labelHeight);
 
     m_shadowColor = QColor("#31395e");
 
@@ -162,6 +163,20 @@ void RoundedSettingsWidget::getButtonState(QString temp, QString pressure, QStri
 
 void RoundedSettingsWidget::saveButtonClicked()
 {
+    if(Settings::instance().readSetting("theme")=="dark")
+    {
+        m_tempLabel->setStyleSheet("color: white;");
+        m_tempGraduate->setStyleSheet("color: white;");
+        m_presureGraduate->setStyleSheet("color: white;");
+        m_themeLabel->setStyleSheet("color: white;");
+    }
+    else
+    {
+        m_tempLabel->setStyleSheet("color: black;");
+        m_tempGraduate->setStyleSheet("color: black;");
+        m_presureGraduate->setStyleSheet("color: black;");
+        m_themeLabel->setStyleSheet("color: black;");
+    }
     emit changeSettings();
     this->hide();
 }
@@ -218,4 +233,9 @@ void RoundedSettingsWidget::darlButtonClicked()
     m_buttonLigt.setStyleSheet(m_inActiveButoonStyle);
     m_buttonDark.setStyleSheet(m_activeButoonStyle);
     Settings::instance().writeSetting("theme", "dark");
+}
+
+void RoundedSettingsWidget::startApp()
+{
+    saveButtonClicked();
 }
