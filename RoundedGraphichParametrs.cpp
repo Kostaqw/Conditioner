@@ -1,5 +1,12 @@
 #include "RoundedGraphichParametrs.h"
 
+/**
+ * @brief Конструктор класса RoundedGraphichParametrs.
+ *
+ * @param width Ширина виджета.
+ * @param height Высота виджета.
+ * @param parent Родительский объект.
+ */
 RoundedGraphichParametrs::RoundedGraphichParametrs(int width, int height, QWidget* parent) : RoundedGraphics(width, height, parent)
 {
     m_shadowColor = QColor("#31395e");
@@ -21,12 +28,17 @@ RoundedGraphichParametrs::RoundedGraphichParametrs(int width, int height, QWidge
     int labelHeight = height/100*45;
 
     m_tempLabel->setGeometry(width/100*5, height/100*5, labelWidth, labelHeight);
-    m_pressureLabel->setGeometry(width/100*5, height/100*45, labelWidth, labelHeight);
+    m_pressureLabel->setGeometry(width/100*5, height/100*45, labelWidth*1.05, labelHeight);
     m_humidityLabel->setGeometry(width/100*60, height/100*5, labelWidth, labelHeight);
     m_angleLabel->setGeometry(width/100*60, height/100*45, labelWidth, labelHeight);
 
 }
 
+/**
+ * @brief Обработчик события перерисовки виджета.
+ *
+ * @param event Событие перерисовки.
+ */
 void RoundedGraphichParametrs :: paintEvent(QPaintEvent *event)
 {
     Q_UNUSED(event);
@@ -54,16 +66,27 @@ void RoundedGraphichParametrs :: paintEvent(QPaintEvent *event)
       {
        painter.setPen(Qt::black);
       }
-
-
 }
 
+/**
+ * @brief Получение угла и обновление виджета.
+ *
+ * @param value Значение угла.
+ */
 void RoundedGraphichParametrs::getAngle(int value)
 {
     m_angle = value;
     updateWidget();
 }
 
+/**
+ * @brief Получение параметров и обновление виджета.
+ *
+ * @param temp Температура.
+ * @param pressure Давление.
+ * @param humidity Влажность.
+ * @param angle Угол.
+ */
 void RoundedGraphichParametrs::getParametrs(int temp, int pressure, int humidity, int angle)
 {
   m_temp_c = temp;
@@ -79,6 +102,9 @@ void RoundedGraphichParametrs::getParametrs(int temp, int pressure, int humidity
   updateWidget();
 }
 
+/**
+ * @brief Обновление отображения виджета.
+ */
 void RoundedGraphichParametrs::updateWidget()
 {
     if(Settings::instance().readSetting("theme")=="dark")

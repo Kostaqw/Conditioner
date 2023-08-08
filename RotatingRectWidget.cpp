@@ -4,6 +4,12 @@
 #include <QDebug>
 #include "Settings.h"
 
+/**
+ * @brief Конструктор класса RotatingRectWidget.
+ * @param width Ширина виджета.
+ * @param height Высота виджета.
+ * @param parent Родительский виджет.
+ */
 RotatingRectWidget::RotatingRectWidget(int width, int height, QWidget *parent)
     : RoundedGraphics(width, height, parent), m_rotationAngle(0)
 {
@@ -40,6 +46,10 @@ RotatingRectWidget::RotatingRectWidget(int width, int height, QWidget *parent)
     m_blackImage = QPixmap(":/img/img/black.png");
 }
 
+/**
+ * @brief Обработчик события рисования виджета.
+ * @param event Указатель на событие рисования.
+ */
 void RotatingRectWidget::paintEvent(QPaintEvent *event)
 {
     Q_UNUSED(event);
@@ -50,6 +60,10 @@ void RotatingRectWidget::paintEvent(QPaintEvent *event)
     drawAirflow(&painter);
 }
 
+/**
+ * @brief Отрисовка вращения прямоугольников.
+ * @param painter Указатель на объект QPainter.
+ */
 void RotatingRectWidget::drawRectangles(QPainter* painter)
 {
     painter->setBrush(m_shadowColor);
@@ -114,6 +128,10 @@ void RotatingRectWidget::drawRectangles(QPainter* painter)
 
 }
 
+/**
+ * @brief Отрисовка схему кондиционера.
+ * @param painter Указатель на объект QPainter.
+ */
 void RotatingRectWidget::drawAirflow(QPainter* painter)
 {
     painter->save();
@@ -135,32 +153,23 @@ void RotatingRectWidget::drawAirflow(QPainter* painter)
     }
 
     painter->restore();
-    /*
-    painter->save();
-    int centerX = width() / 2;
-    int centerY = height() / 2;
-
-    QPen pen(Qt::red);
-    pen.setWidth(10);
-    painter->setPen(pen);
-    painter->setBrush(Qt::red);
-
-
-    painter->drawRect(10, 10, width()- 70, 5);
-    painter->drawRect(10, 10, 5, height() - 30); // Top
-    painter->drawRect(10, height() - 20, 50, 5); // Bottom
-    painter->drawLine(60, height() - 20, 90,90);
-    painter->restore();
-    */
 
 }
 
+/**
+ * @brief Поворачивает прямоугольники на заданный угол.
+ * @param angle Угол поворота.
+ */
 void RotatingRectWidget::rotateRectangles(int angle)
 {
     m_rotationAngle = angle;
     update();
 }
 
+/**
+ * @brief Устанавливает угол поворота прямоугольников.
+ * @param angle Угол поворота.
+ */
 void RotatingRectWidget::getAngle(int angle)
 {
     m_rotationAngle = angle;

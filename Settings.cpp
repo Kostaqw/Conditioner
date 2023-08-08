@@ -1,21 +1,41 @@
 #include "Settings.h"
 #include <QDebug>
+
+/**
+ * @brief Конструктор класса настроек.
+ * @param parent Родительский объект.
+ */
 Settings::Settings(QObject *parent) : QObject(parent)
 {
     m_settings.beginGroup("MyApp");
 }
 
+/**
+ * @brief Получение экземпляра класса настроек.
+ * @return Ссылка на экземпляр класса настроек.
+ */
 Settings& Settings::instance()
 {
     static Settings instance;
     return instance;
 }
 
+/**
+ * @brief Чтение настройки по ключу.
+ * @param key Ключ настройки.
+ * @param defaultValue Значение по умолчанию, если настройка отсутствует.
+ * @return Значение настройки.
+ */
 QString Settings::readSetting(const QString& key, const QString& defaultValue) const
 {
     return m_settings.value(key, defaultValue).toString();
 }
 
+/**
+ * @brief Запись настройки.
+ * @param key Ключ настройки.
+ * @param value Значение настройки.
+ */
 void Settings::writeSetting(const QString& key, const QString& value)
 {
     qDebug() << "Writing setting: " << key << " = " << value;
@@ -24,6 +44,9 @@ void Settings::writeSetting(const QString& key, const QString& value)
 
 }
 
+/**
+ * @brief Сохранение настроек в XML-файл.
+ */
 void Settings::saveSettingsToXml()
 {
     QFile file("settings");
@@ -52,6 +75,9 @@ void Settings::saveSettingsToXml()
     file.close();
 }
 
+/**
+ * @brief Загрузка настроек из XML-файла.
+ */
 void Settings::loadSettingsFromXml()
 {
     QFile file("settings");
@@ -100,8 +126,6 @@ void Settings::loadSettingsFromXml()
         }
     }
 
-
-
     if (xmlReader.hasError())
     {
 
@@ -112,6 +136,9 @@ void Settings::loadSettingsFromXml()
     emit sendSetedTemperature(setTemp);
 }
 
+/**
+ * @brief Сохранение настроек в XML-файл.
+ */
 void Settings::saveToXml()
 {
     saveSettingsToXml();

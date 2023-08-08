@@ -1,6 +1,15 @@
 #include "RoundedGraphicsWithSlider.h"
 #include <QStyle>
 #include "Settings.h"
+
+/**
+ * @brief Конструктор класса RoundedGraphicsWithSlider.
+ *
+ * @param width Ширина графического элемента.
+ * @param height Высота графического элемента.
+ * @param parent Родительский виджет.
+ */
+
 RoundedGraphicsWithSlider::RoundedGraphicsWithSlider(int width, int height, QWidget* parent)
     : RoundedGraphics(width, height, parent)
 {
@@ -31,6 +40,11 @@ RoundedGraphicsWithSlider::RoundedGraphicsWithSlider(int width, int height, QWid
     connect(m_slider, &QSlider::valueChanged, this, &RoundedGraphicsWithSlider::handleSliderValueChanged);
 }
 
+/**
+ * @brief Слот, вызывающийся при изменении значения QSlider.
+ *
+ * @param value Новое значение QSlider.
+ */
 void RoundedGraphicsWithSlider::handleSliderValueChanged(int value)
 {
     SetText(QString::number(value) + " C");
@@ -39,6 +53,11 @@ void RoundedGraphicsWithSlider::handleSliderValueChanged(int value)
     Settings::instance().writeSetting("setTemp",QString::number(value));
 }
 
+/**
+ * @brief Устанавливает значение QSlider для температуры.
+ *
+ * @param value Значение температуры.
+ */
 void RoundedGraphicsWithSlider::setTemp(int value)
 {
     m_slider->setValue(value);

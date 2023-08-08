@@ -2,11 +2,21 @@
 #include "RoundedGraphics.h"
 #include "QLabel"
 
+/**
+ * @brief Конструктор класса RoundedSettingsWidget.
+ * @param width Ширина виджета.
+ * @param height Высота виджета.
+ * @param parent Родительский виджет.
+ */
 RoundedSettingsWidget::RoundedSettingsWidget(int width, int height, QWidget* parent):RoundedGraphics(width, height, parent)
 {
     CreateElements(width, height);
 }
 
+/**
+ * @brief Обработчик события отрисовки виджета.
+ * @param event Событие отрисовки.
+ */
 void RoundedSettingsWidget::paintEvent(QPaintEvent *event)
 {
     Q_UNUSED(event);
@@ -18,6 +28,11 @@ void RoundedSettingsWidget::paintEvent(QPaintEvent *event)
     drawMainRectangle(&painter, rect());
 }
 
+/**
+ * @brief Создание элементов интерфейса и установка их параметров.
+ * @param width Ширина виджета.
+ * @param height Высота виджета.
+ */
 void RoundedSettingsWidget::CreateElements(int width, int height)
 {
     QFont headerFont = QFont("Arial",30);
@@ -122,11 +137,20 @@ void RoundedSettingsWidget::CreateElements(int width, int height)
     QObject::connect(&m_buttonDark, &QPushButton::clicked, this, &RoundedSettingsWidget::darlButtonClicked);
 }
 
+/**
+ * @brief Обновление отрисовки виджета.
+ */
 void RoundedSettingsWidget::UpdatePainter()
 {
     update();
 }
 
+/**
+ * @brief Установка состояния кнопок на основе предоставленных значений.
+ * @param temp Выбранная единица температуры.
+ * @param pressure Выбранная единица давления.
+ * @param theme Выбранная тема.
+ */
 void RoundedSettingsWidget::getButtonState(QString temp, QString pressure, QString theme)
 {
     if(temp=="C")
@@ -161,6 +185,10 @@ void RoundedSettingsWidget::getButtonState(QString temp, QString pressure, QStri
     }
 }
 
+/**
+ * @brief Слот: обработка события нажатия кнопки "Save".
+ * Изменение цвета текста в зависимости от выбранной темы и отправка сигнала changeSettings.
+ */
 void RoundedSettingsWidget::saveButtonClicked()
 {
     if(Settings::instance().readSetting("theme")=="dark")
@@ -181,6 +209,9 @@ void RoundedSettingsWidget::saveButtonClicked()
     this->hide();
 }
 
+/**
+ * @brief Слот: обработка события нажатия кнопки выбора шкалы измерения температуры (цльсии).
+ */
 void RoundedSettingsWidget::celstButtonClicked()
 {
     m_buttonCelsie.setStyleSheet(m_activeButoonStyle);
@@ -190,6 +221,9 @@ void RoundedSettingsWidget::celstButtonClicked()
 
 }
 
+/**
+ * @brief Слот: обработка события нажатия кнопки выбора шкалы измерения температуры (фаренгейт).
+ */
 void RoundedSettingsWidget::farhButtonClicked()
 {
     m_buttonCelsie.setStyleSheet(m_inActiveButoonStyle);
@@ -198,6 +232,9 @@ void RoundedSettingsWidget::farhButtonClicked()
     Settings::instance().writeSetting("temperature", "F");
 }
 
+/**
+ * @brief Слот: обработка события нажатия кнопки выбора шкалы измерения температуры (кельвин).
+ */
 void RoundedSettingsWidget::kelvButtonClicked()
 {
     m_buttonCelsie.setStyleSheet(m_inActiveButoonStyle);
@@ -206,6 +243,9 @@ void RoundedSettingsWidget::kelvButtonClicked()
     Settings::instance().writeSetting("temperature", "K");
 }
 
+/**
+ * @brief Слот: обработка события нажатия кнопки выбора давления (Паскали).
+ */
 void RoundedSettingsWidget::pascalButtonClicked()
 {
     m_buttonPascal.setStyleSheet(m_activeButoonStyle);
@@ -214,6 +254,9 @@ void RoundedSettingsWidget::pascalButtonClicked()
 
 }
 
+/**
+ * @brief Слот: обработка события нажатия кнопки выбора давления (мм. рт. ст.).
+ */
 void RoundedSettingsWidget::hgButtonClicked()
 {
     m_buttonPascal.setStyleSheet(m_inActiveButoonStyle);
@@ -221,6 +264,9 @@ void RoundedSettingsWidget::hgButtonClicked()
     Settings::instance().writeSetting("pressure", "Mm");
 }
 
+/**
+ * @brief Слот: обработка события нажатия кнопки выбора светлой темы.
+ */
 void RoundedSettingsWidget::lightButtonClicked()
 {
     m_buttonLigt.setStyleSheet(m_activeButoonStyle);
@@ -228,6 +274,9 @@ void RoundedSettingsWidget::lightButtonClicked()
     Settings::instance().writeSetting("theme", "light");
 }
 
+/**
+ * @brief Слот: обработка события нажатия кнопки выбора темной темы.
+ */
 void RoundedSettingsWidget::darlButtonClicked()
 {
     m_buttonLigt.setStyleSheet(m_inActiveButoonStyle);
@@ -235,6 +284,9 @@ void RoundedSettingsWidget::darlButtonClicked()
     Settings::instance().writeSetting("theme", "dark");
 }
 
+/**
+ * @brief Слот при запуске приложения.
+ */
 void RoundedSettingsWidget::startApp()
 {
     saveButtonClicked();

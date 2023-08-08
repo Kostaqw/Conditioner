@@ -4,6 +4,11 @@
 #include <QRandomGenerator>
 #include <QMap>
 
+/**
+ * @brief Конструктор класса Device.
+ * @param parent Родительский виджет.
+ */
+
 Device::Device(QWidget *parent) : QWidget(parent)
 {
     setMaximumSize(512,384);
@@ -19,7 +24,7 @@ Device::Device(QWidget *parent) : QWidget(parent)
     m_tempLabel = new QLabel("T: ");
     m_tempLabel->setFont(headerFont);
 
-    m_pressureLabel = new QLabel("P: " + QString::number(QRandomGenerator::global()->bounded(700,800)));
+    m_pressureLabel = new QLabel("P: " + QString::number(QRandomGenerator::global()->bounded(50,100)));
     m_pressureLabel->setFont(headerFont);
 
     m_humidityLabel = new QLabel("H: " + QString::number(QRandomGenerator::global()->bounded(5,95)));
@@ -122,6 +127,11 @@ Device::Device(QWidget *parent) : QWidget(parent)
     });
 }
 
+/**
+ * @brief Преобразует строку в перечисление temperatureOfSystem.
+ * @param value Строковое значение.
+ * @return Значение перечисления temperatureOfSystem.
+ */
 temperatureOfSystem Device::stringToTemperature(const QString &value)
 {
     static const QMap<QString, temperatureOfSystem> stringToEnumMap {
@@ -131,6 +141,12 @@ temperatureOfSystem Device::stringToTemperature(const QString &value)
         };
         return stringToEnumMap.value(value, temperatureOfSystem::t_low);
 }
+
+/**
+ * @brief Преобразует строку в перечисление powerSignal.
+ * @param value Строковое значение.
+ * @return Значение перечисления powerSignal.
+ */
 powerSignal Device::stringToPowerSignal(const QString &value)
 {
     static const QMap<QString, powerSignal> stringToEnumMap {
@@ -142,6 +158,11 @@ powerSignal Device::stringToPowerSignal(const QString &value)
         return stringToEnumMap.value(value, powerSignal::s_none);
 }
 
+/**
+ * @brief Преобразует значение перечисления powerSignal в строку.
+ * @param value Значение перечисления powerSignal.
+ * @return Строковое представление.
+ */
 QString Device::signalToString(powerSignal value) {
     static const QMap<powerSignal, QString> enumToStringMap {
         {powerSignal::s_high, "3"},
@@ -151,6 +172,12 @@ QString Device::signalToString(powerSignal value) {
     };
     return enumToStringMap.value(value, QString());
 }
+
+/**
+ * @brief Преобразует значение перечисления temperatureOfSystem в строку.
+ * @param value Значение перечисления temperatureOfSystem.
+ * @return Строковое представление.
+ */
 QString Device::temperatureToString(temperatureOfSystem value) {
     static const QMap<temperatureOfSystem, QString> enumToStringMap {
         {temperatureOfSystem::t_low, "low"},
@@ -159,54 +186,20 @@ QString Device::temperatureToString(temperatureOfSystem value) {
     };
     return enumToStringMap.value(value, QString());
 }
-/*
-void Device::receiveData(SendData data)
-{
 
-
-    m_pressureLabel->setText("P: " + QString::number(data.m_pressure));
-
-
-
-    if(data.m_signal == powerSignal::s_high)
-    {
-        m_stateSecondBlock->setCurrentIndex(0);
-    }
-    else if(data.m_signal == powerSignal::s_mid)
-    {
-        m_stateSecondBlock->setCurrentIndex(1);
-    }
-    else if(data.m_signal == powerSignal::s_low)
-    {
-        m_stateSecondBlock->setCurrentIndex(2);
-    }
-    else
-    {
-        m_stateSecondBlock->setCurrentIndex(3);
-    }
-
-
-
-
-    if(data.m_temperatureOfSystem == temperatureOfSystem::t_high)
-    {
-        m_stateFourBlock->setCurrentIndex(0);
-    }
-    else if(data.m_temperatureOfSystem == temperatureOfSystem::t_mid)
-    {
-        m_stateFourBlock->setCurrentIndex(1);
-    }
-    else
-    {
-        m_stateFourBlock->setCurrentIndex(2);
-    }
-}*/
-
+/**
+ * @brief Устанавливает текущее значение температуры.
+ * @param temp Температура.
+ */
 void Device::GetTemp(float temp)
 {
   m_tempLabel->setText("T: " + QString::number(temp));
 }
 
+/**
+ * @brief Устанавливает текущее состояние питания.
+ * @param power Состояние питания.
+ */
 void Device::GetPowerStatus(bool power)
 {
   if(power)
@@ -219,6 +212,10 @@ void Device::GetPowerStatus(bool power)
   }
 }
 
+/**
+ * @brief Устанавливает текущее состояние вентилятора.
+ * @param fan Состояние вентилятора.
+ */
 void Device::GetFanStatus(bool fan)
 {
   if(fan)
@@ -231,6 +228,10 @@ void Device::GetFanStatus(bool fan)
   }
 }
 
+/**
+ * @brief Устанавливает текущее состояние потока воздуха.
+ * @param angle угол поворота.
+ */
 void Device::GetAngle(int angle)
 {
     m_angleLabel->setText("<: " + QString::number(angle));

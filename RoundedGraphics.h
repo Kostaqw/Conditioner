@@ -13,7 +13,7 @@ public:
     void SetHeader(QString header);
     void SetHeaderFont(QFont *headerFon);
     void SetTextFont(QFont *textFont);
-    ~RoundedGraphics();
+
 
 public slots:
     virtual void getTheme();

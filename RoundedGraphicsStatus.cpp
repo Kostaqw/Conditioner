@@ -1,6 +1,12 @@
 #include "RoundedGraphicsStatus.h"
 #include "Settings.h"
 
+/**
+ * @brief Конструктор класса RoundedGraphicsStatus.
+ * @param width Ширина виджета.
+ * @param height Высота виджета.
+ * @param parent Родительский виджет.
+ */
 RoundedGraphicsStatus::RoundedGraphicsStatus(int width, int height, QWidget* parent)
     : RoundedGraphics(width, height, parent)
 {
@@ -8,7 +14,10 @@ RoundedGraphicsStatus::RoundedGraphicsStatus(int width, int height, QWidget* par
    m_shadowColor = QColor("#31395e");
 }
 
-
+/**
+ * @brief Обработчик события перерисовки виджета.
+ * @param event Событие перерисовки.
+ */
 void RoundedGraphicsStatus::paintEvent(QPaintEvent *event)
 {
     Q_UNUSED(event);
@@ -25,6 +34,10 @@ void RoundedGraphicsStatus::paintEvent(QPaintEvent *event)
     painter.drawPixmap(width()/100*48,height()/100*48, m_statusMap.value(m_fanStatus));
 }
 
+/**
+ * @brief Обработчик события нажатия мыши.
+ * @param event Событие нажатия.
+ */
 void RoundedGraphicsStatus::mousePressEvent(QMouseEvent *event)
 {
     int x = event->x();
@@ -89,6 +102,9 @@ void RoundedGraphicsStatus::mousePressEvent(QMouseEvent *event)
     }
 }
 
+/**
+ * @brief Создает дневник статусов из спрайт листа
+ */
 void RoundedGraphicsStatus::CreateStatusMap()
 {
     QPixmap spriteSheet(":/img/img/status.png");
@@ -116,6 +132,10 @@ void RoundedGraphicsStatus::CreateStatusMap()
     m_fanStatus = CondeiStatus::White_fan_off;
 }
 
+/**
+ * @brief Обновляет значки в соответствии с текущей температурой системы.
+ * @param temp Текущая температура системы.
+ */
 void RoundedGraphicsStatus::GetTempOfSystem(temperatureOfSystem temp)
 {
     if(temp == temperatureOfSystem::t_low)
@@ -133,6 +153,10 @@ void RoundedGraphicsStatus::GetTempOfSystem(temperatureOfSystem temp)
     update();
 }
 
+/**
+ * @brief Обновляет значок в соответствии с текущим сигналом до устройства.
+ * @param signal Текущий сигнал мощности.
+ */
 void RoundedGraphicsStatus::GetPowerOfSignal(powerSignal signal)
 {
     if(signal == powerSignal::s_none)
@@ -154,6 +178,9 @@ void RoundedGraphicsStatus::GetPowerOfSignal(powerSignal signal)
     update();
 }
 
+/**
+ * @brief Обновляет цвет и значок в соответствии с текущей темой.
+ */
 void RoundedGraphicsStatus::getTheme()
 {
     if (Settings::instance().readSetting("theme") == "dark")

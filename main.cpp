@@ -2,15 +2,11 @@
 #include "Device.h"
 #include <QApplication>
 #include "RoundedGraphics.h"
-#include <QGraphicsEllipseItem>
-#include <QGraphicsRectItem>
-#include <QHBoxLayout>
 #include <QGraphicsProxyWidget>
 #include "GraphicsView.h"
 #include <QGraphicsScene>
 #include <QMainWindow>
-#include <QSlider>
-#include "CustomSlider.h"
+#include <QRandomGenerator>
 #include "RoundedGraphicsWithSlider.h"
 #include "RotatingRectWidget.h"
 #include "RoundedGraphicsStatus.h"
@@ -18,13 +14,15 @@
 #include "RoundedGraphichParametrs.h"
 #include "Settings.h"
 
+/**
+ * @brief Создает и сохраняет настройки цветов в экземпляре класса Settings.
+ */
 void createColorsSettings()
 {
 
         Settings::instance().writeSetting("darkBackgroundColor", "#18213d");
 
         Settings::instance().writeSetting("darkMainColor", "#31395e");
-
 
         Settings::instance().writeSetting("lightBackgroundColor", "#F0F0F0");
 
@@ -106,7 +104,7 @@ int main(int argc, char *argv[])
    QObject::connect(&Settings::instance(), &Settings::sendButtonStates, settingsWidget, &RoundedSettingsWidget::getButtonState);
    QObject::connect(&Settings::instance(), &Settings::sendSetedTemperature,setTemperatureWidget, &RoundedGraphicsWithSlider::setTemp);
 
-   dev->sendParametrs(QRandomGenerator::global()->bounded(10,30), QRandomGenerator::global()->bounded(1000,2000),QRandomGenerator::global()->bounded(5,95),0);
+   dev->sendParametrs(QRandomGenerator::global()->bounded(10,30), QRandomGenerator::global()->bounded(500,800),QRandomGenerator::global()->bounded(5,95),0);
    Settings::instance().loadSettingsFromXml();
    settingsWidget->startApp();
    return a.exec();
