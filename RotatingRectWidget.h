@@ -5,6 +5,9 @@
 #include <QSlider>
 #include <QPixmap>
 #include "RoundedGraphics.h"
+#include <QPainter>
+#include <QDebug>
+#include "Settings.h"
 
 class RotatingRectWidget : public RoundedGraphics
 {

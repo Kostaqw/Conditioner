@@ -2,6 +2,8 @@
 
 #include "RoundedGraphics.h"
 #include <QSlider>
+#include <QStyle>
+#include "Settings.h"
 
 class RoundedGraphicsWithSlider : public RoundedGraphics
 {

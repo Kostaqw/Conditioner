@@ -1,5 +1,5 @@
 #include "RoundedGraphicsStatus.h"
-#include "Settings.h"
+
 
 /**
  * @brief Конструктор класса RoundedGraphicsStatus.
@@ -176,6 +176,52 @@ void RoundedGraphicsStatus::GetPowerOfSignal(powerSignal signal)
         m_signalStatus = CondeiStatus::Signal_3;
     }
     update();
+}
+
+/**
+ * @brief Слот получения сигнала о питании устройства
+ * @param signal состояние питания
+ */
+void RoundedGraphicsStatus::GetPowerStatus(bool state)
+{
+    if(state)
+    {
+        m_powerStatus = CondeiStatus::Power_on;
+    }
+    else
+    {
+        m_powerStatus = CondeiStatus::Power_off;
+    }
+}
+
+/**
+ * @brief Слот получения сигнала о вентиляторе
+ * @param signal состояние вентилятора
+ */
+void RoundedGraphicsStatus::GetFanStatus(bool state)
+{
+    if(Settings::instance().readSetting("theme")=="light")
+    {
+        if(state)
+        {
+            m_fanStatus = CondeiStatus::Black_fan_on;
+        }
+        else
+        {
+            m_fanStatus = CondeiStatus::Black_fan_off;
+        }
+    }
+    else
+    {
+        if(state)
+        {
+            m_fanStatus = CondeiStatus::White_fan_on;
+        }
+        else
+        {
+            m_fanStatus = CondeiStatus::White_fan_off;
+        }
+    }
 }
 
 /**

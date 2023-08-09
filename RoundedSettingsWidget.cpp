@@ -1,6 +1,4 @@
 #include "RoundedSettingsWidget.h"
-#include "RoundedGraphics.h"
-#include "QLabel"
 
 /**
  * @brief Конструктор класса RoundedSettingsWidget.

@@ -1,6 +1,5 @@
 #include "RoundedGraphicsWithSlider.h"
-#include <QStyle>
-#include "Settings.h"
+
 
 /**
  * @brief Конструктор класса RoundedGraphicsWithSlider.

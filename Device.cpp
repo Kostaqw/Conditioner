@@ -1,8 +1,4 @@
 #include "Device.h"
-#include <QtWidgets>
-#include <QFont>
-#include <QRandomGenerator>
-#include <QMap>
 
 /**
  * @brief Конструктор класса Device.
@@ -109,6 +105,24 @@ Device::Device(QWidget *parent) : QWidget(parent)
     {
         emit sendTempOfSystem(stringToTemperature(m_stateFourBlock->currentText()));
         emit sendPowerSignal(stringToPowerSignal(m_stateSecondBlock->currentText()));
+
+        if(m_stateFirstBlock->currentIndex()==0)
+        {
+            emit sendPowerState(true);
+        }
+        else
+        {
+            emit sendPowerState(false);
+        }
+
+        if(m_stateThirdBlock->currentIndex()==0)
+        {
+            emit sendFanState(true);
+        }
+        else
+        {
+            emit sendFanState(false);
+        }
 
         bool p1,p2,p3,p4;
         int temp = m_tempEdit->text().toInt(&p1);

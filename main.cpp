@@ -83,7 +83,9 @@ int main(int argc, char *argv[])
    QObject::connect(setTemperatureWidget, &RoundedGraphicsWithSlider::sendTemp, dev, &Device::GetTemp);
 
    QObject::connect(statusWidget, &RoundedGraphicsStatus::ChangePower, dev, &Device::GetPowerStatus);
-   QObject::connect(statusWidget, &RoundedGraphicsStatus::ChangeFan, dev, &Device::GetFanStatus);
+   QObject::connect(statusWidget, &RoundedGraphicsStatus::ChangeFan, dev, &Device::GetFanStatus); 
+   QObject::connect(dev, &Device::sendPowerState, statusWidget, &RoundedGraphicsStatus::GetPowerStatus);
+   QObject::connect(dev, &Device::sendFanState, statusWidget, &RoundedGraphicsStatus::GetFanStatus);
 
    QObject::connect(condeiWidget, &RotatingRectWidget::changeAngle, dev, &Device::GetAngle);
    QObject::connect(condeiWidget, &RotatingRectWidget::changeAngle, valuesWidget, &RoundedGraphichParametrs::getAngle);

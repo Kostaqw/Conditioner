@@ -1,5 +1,11 @@
 #pragma once
 #include <QGraphicsView>
+#include <QPainter>
+#include <QGraphicsDropShadowEffect>
+#include <QDebug>
+#include "Settings.h"
+#include "QDebug"
+#include "Settings.h"
 
 class RoundedGraphics : public QWidget {
 

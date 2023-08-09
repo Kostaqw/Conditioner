@@ -1,10 +1,5 @@
 #include "RoundedGraphics.h"
-#include <QPainter>
-#include <QGraphicsDropShadowEffect>
-#include <QDebug>
-#include "Settings.h"
-#include "QDebug"
-#include "Settings.h"
+
 
 /**
  * @brief Конструктор класса RoundedGraphics.

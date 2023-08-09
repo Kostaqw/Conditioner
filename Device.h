@@ -1,8 +1,13 @@
 #pragma once
 
 #include <QWidget>
-#include "SendData.h"
+
 #include <QtGlobal>
+#include <QtWidgets>
+#include <QFont>
+#include <QRandomGenerator>
+#include <QMap>
+#include "StatusEnums.h"
 
 class QLabel;
 class QLineEdit;
@@ -52,10 +57,11 @@ public:
     explicit Device(QWidget *parent = nullptr);
 
 signals:
-    void sendData(SendData data);
     void sendTempOfSystem(temperatureOfSystem temp);
     void sendPowerSignal(powerSignal signal);
     void sendParametrs(int temp, int pressure, int humidity, int angle);
+    void sendPowerState(bool state);
+    void sendFanState(bool state);
 
 public slots:
     void GetTemp(float Temp);

@@ -5,6 +5,7 @@
 #include <QPixmap>
 #include "StatusEnums.h"
 #include <QMouseEvent>
+#include "Settings.h"
 
 typedef QMap<CondeiStatus, QPixmap> StatusMap;
 
@@ -34,6 +35,9 @@ signals:
 public slots:
     void GetTempOfSystem(temperatureOfSystem temp);
     void GetPowerOfSignal(powerSignal signal);
+    void GetPowerStatus(bool state);
+    void GetFanStatus(bool state);
+
     void getTheme() override;
 };
 

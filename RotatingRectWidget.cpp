@@ -1,9 +1,5 @@
 #include "RotatingRectWidget.h"
 
-#include <QPainter>
-#include <QDebug>
-#include "Settings.h"
-
 /**
  * @brief Конструктор класса RotatingRectWidget.
  * @param width Ширина виджета.

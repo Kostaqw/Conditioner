@@ -4,6 +4,8 @@
 #include "RoundedGraphics.h"
 #include "QPushButton"
 #include "QLabel"
+#include "RoundedGraphics.h"
+#include "QLabel"
 
 class RoundedSettingsWidget : public RoundedGraphics
 {

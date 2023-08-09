@@ -1,5 +1,4 @@
 #include "Settings.h"
-#include <QDebug>
 
 /**
  * @brief Конструктор класса настроек.
@@ -38,10 +37,7 @@ QString Settings::readSetting(const QString& key, const QString& defaultValue) c
  */
 void Settings::writeSetting(const QString& key, const QString& value)
 {
-    qDebug() << "Writing setting: " << key << " = " << value;
     m_settings.setValue(key, value);
-
-
 }
 
 /**
@@ -65,7 +61,6 @@ void Settings::saveSettingsToXml()
 
     foreach(const QString& key, allKeys)
     {
-        qDebug() << key << " - " << readSetting(key,"");
         xmlWriter.writeTextElement(key, readSetting(key,""));
     }
 
